@@ -27,7 +27,7 @@ export const Grid = ({ title, items, type }: GridProps) => {
                         onClick={() => handleItemClick(item.id)}
                     >
                         <div className={styles.thumbnail}>
-                            <img src={item.thumbnail} alt={item.title} />
+                            <img src={item.thumbnail} alt={item.title} loading="lazy" />
                         </div>
                         <div className={styles.overlay}>
                             <div className={styles.info}>
