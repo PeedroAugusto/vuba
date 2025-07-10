@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+// Variáveis originais
+$main-color: #001845;
+$background-color: #020d1e;
+$text-color: #ffffff;
+$description-color: #979DAC;
+$error-color: #ff5b5b;
+
+// Novas variáveis para o design moderno
+$primary-dark: #0a0f1c;
+$primary-light: #1a2235;
+$accent-color: #64ffda;
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.7);
+$gradient-start: #0f172a;
+$gradient-end: #020617;
+
+* {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    scroll-behavior: smooth;
+}
+body, html, #root {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    background: radial-gradient(circle at top right, $gradient-start, $gradient-end);
+    color: $text-color;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-weight: 400;
+    line-height: 1.5;
+    
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        
+        &:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    }
+}
+
+#root {
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    
+    &::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 20%, rgba(100, 255, 218, 0.15) 0%, transparent 25%),
+            radial-gradient(circle at 80% 80%, rgba(100, 255, 218, 0.1) 0%, transparent 25%);
+        pointer-events: none;
+        z-index: -1;
+    }
+}
+
+// Classes utilitárias
+.glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, $text-primary, $accent-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hover-scale {
+    transition: transform 0.3s ease;
+    
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+// Animações
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

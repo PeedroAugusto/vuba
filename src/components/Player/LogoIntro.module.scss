@@ -1,0 +1,32 @@
+@use '../../styles/global.scss' as *;
+
+.introContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    darken($main-color, 12%) 0%,
+    darken($main-color, 9%) 50%,
+    darken($main-color, 12%) 100%
+  );
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+
+  // Aumenta o tamanho do logo na intro
+  :global(.logoContainer) {
+    width: 300px;
+    height: 90px;
+  }
+}
+
+.fadeOut {
+  opacity: 0;
+  pointer-events: none;
+} 

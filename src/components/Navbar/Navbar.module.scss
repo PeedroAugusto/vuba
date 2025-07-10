@@ -1,0 +1,343 @@
+@use '../../styles/global.scss' as *;
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    padding: 0 max(4%, 54px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(to bottom, rgba(0, 5, 15, 0.9), transparent);
+
+    &.scrolled {
+        background: rgba(0, 5, 15, 0.8);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+        height: 70px;
+
+        .left .logo {
+            height: 47px;
+        }
+    }
+
+    .left {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+
+        .logo {
+            height: 47px;
+            display: flex;
+            align-items: center;
+            padding: 2px 0;
+            transition: height 0.3s ease;
+
+            img {
+                height: 100%;
+                width: auto;
+                object-fit: none;
+            }
+        }
+
+        .menu {
+            display: flex;
+            gap: 32px;
+
+            .link {
+                color: rgba(255, 255, 255, 0.8);
+                text-decoration: none;
+                font-size: 0.95rem;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                position: relative;
+                padding: 5px 0;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 2px;
+                    background: $main-color;
+                    transform: scaleX(0);
+                    transform-origin: right;
+                    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+
+                &:hover {
+                    color: #fff;
+                    transform: translateY(-1px);
+
+                    &::before {
+                        transform: scaleX(1);
+                        transform-origin: left;
+                    }
+                }
+
+                &.active {
+                    color: #fff;
+                    font-weight: 600;
+
+                    &::before {
+                        transform: scaleX(1);
+                    }
+                }
+            }
+        }
+
+        .menuToggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 8px;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+
+        .search {
+            position: relative;
+            
+            .searchInput {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: #fff;
+                padding: 10px 40px 10px 16px;
+                border-radius: 20px;
+                font-size: 0.95rem;
+                width: 0;
+                opacity: 0;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+                &::placeholder {
+                    color: rgba(255, 255, 255, 0.5);
+                }
+
+                &:focus {
+                    outline: none;
+                    border-color: rgba(255, 255, 255, 0.4);
+                    background: rgba(255, 255, 255, 0.15);
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                }
+            }
+
+            .searchToggle {
+                background: none;
+                border: none;
+                color: rgba(255, 255, 255, 0.8);
+                cursor: pointer;
+                padding: 8px;
+                font-size: 1.3rem;
+                position: absolute;
+                right: 4px;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: all 0.3s ease;
+                border-radius: 50%;
+
+                &:hover {
+                    color: #fff;
+                    background: rgba(255, 255, 255, 0.1);
+                }
+            }
+
+            &.active .searchInput {
+                width: 280px;
+                opacity: 1;
+            }
+        }
+
+        .notifications {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            padding: 8px;
+            font-size: 1.3rem;
+            position: relative;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+
+            &:hover {
+                color: #fff;
+                background: rgba(255, 255, 255, 0.1);
+                transform: translateY(-1px);
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 8px;
+                height: 8px;
+                background: $main-color;
+                border-radius: 50%;
+                border: 2px solid rgb(0, 5, 15);
+                box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+                animation: pulse 2s infinite;
+            }
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding-right: 12px;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.15);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+
+                .avatar {
+                    transform: scale(1.05);
+                }
+
+                i {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                object-fit: cover;
+                transition: transform 0.3s ease;
+            }
+
+            i {
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 1.2rem;
+                transition: transform 0.3s ease;
+            }
+        }
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba($main-color, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba($main-color, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba($main-color, 0);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .navbar {
+        .left {
+            .menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 250px;
+                height: calc(100vh - 70px);
+                background: rgb(0, 5, 15);
+                flex-direction: column;
+                padding: 20px;
+                transition: left 0.3s ease;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+
+                &.show {
+                    left: 0;
+                }
+
+                .link {
+                    padding: 12px 0;
+                    font-size: 1rem;
+
+                    &::after {
+                        bottom: 8px;
+                    }
+                }
+            }
+
+            .menuToggle {
+                display: block;
+            }
+        }
+
+        .right {
+            .search {
+                &.active .searchInput {
+                    width: 200px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        .right {
+            .search {
+                &.active .searchInput {
+                    width: 160px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .navbar {
+        padding: 0 15px;
+        
+        .right {
+            gap: 15px;
+
+            .search {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                padding: 10px;
+                background: rgb(0, 5, 15);
+                display: none;
+
+                &.active {
+                    display: block;
+
+                    .searchInput {
+                        width: 100%;
+                    }
+                }
+
+                .searchInput {
+                    width: 100%;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

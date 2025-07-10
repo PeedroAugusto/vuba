@@ -1,0 +1,166 @@
+@use '../../styles/global.scss';
+
+.login-page {
+
+    height: 100%;
+    align-content: center;
+
+ 
+    .cadastre {
+        position: absolute;
+        top: 15px;
+        right: 2%;
+        font-size: large;
+        color: white;
+    }
+
+    .logo {
+        top: 0;
+        position: absolute;
+    }
+
+    form {
+        margin: 0 auto;
+        height: 500px;
+        width: 30%;
+        position: absolute;
+        place-self: anchor-center;
+        padding: 40px;
+        color: white;
+        border-radius: 8px;
+        background: linear-gradient(#001233, #070b18);
+        display: flex;
+        flex-direction: column;
+
+        h1 {
+            align-self: center;
+        }
+
+        .sub-title {
+            text-align: center;
+        }
+
+        p i {
+            margin-right: 10px;
+        }
+
+        .input-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0px;
+
+
+            a {
+                margin-bottom: 12px;
+            }
+        }
+
+        input {
+            background-color: #001233;
+            border: 1px solid rgb(219, 219, 219);
+            height: 35px;
+            font-size: medium;
+            color: white;
+            padding: 7px;
+            border-radius: 3px;
+        }
+
+        .forgot {
+            text-decoration: none;
+            color: #3c6893;
+            width: 20%;
+            min-width: 165px;
+            border-bottom: transparent solid;
+        }
+
+        .forgot:hover {
+            border-bottom: #3c6893 solid;
+        }
+
+
+        button {
+            width: 50%;
+            background-color: white;
+            color: black;
+            height: 42px;
+            border: transparent;
+            margin-top: 15px;
+            border-radius: 3px;
+        }
+
+
+        .error {
+            border-color: red;
+        }
+
+        .error-message {
+            background-color: global.$error-color;
+            color: white;
+            margin: 0px;
+            padding: 3px;
+            top: -2px;
+
+            font-size: 80%;
+            position: relative;
+        }
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .login-page {
+        form {
+            width: 50%;
+        }
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .login-page {
+        overflow: hidden;
+
+        form {
+            padding: 0 15px;
+            width: 100%;
+            align-items: flex-start;
+            height: 500px;
+
+            h1 {
+                font-size: large;
+                align-self: center;
+            }
+
+            .login-fail {
+                width: 90%;
+            }
+
+            .sub-title {
+                text-align: left;
+                font-size: medium;
+            }
+
+            .input-group {
+                width: 90%;
+
+                input {
+                    height: 25px;
+                }
+
+                .error-message {
+                    font-size: 70%;
+                }
+            }
+        }
+
+        .cadastre {
+            right: 8%;
+        }
+
+        .logo {
+            top: 0;
+            width: 20%;
+            min-width: 160px;
+            position: absolute;
+        }
+    }
+}

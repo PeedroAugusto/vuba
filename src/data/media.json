@@ -1,0 +1,535 @@
+{
+    "featured": {
+        "id": 1,
+        "title": "Guardiões da Galáxia Vol. 3",
+        "synopsis": "Peter Quill, que ainda está se recuperando da perda de Gamora, deve reunir sua equipe para defender o universo e proteger um dos seus. Se a missão não for totalmente bem-sucedida, isso pode levar ao fim dos Guardiões como os conhecemos.",
+        "thumbnail": "https://image.tmdb.org/t/p/original/4yycRb9VWxV6pYb9xHxY9JwM7Nj.jpg",
+        "background": "https://image.tmdb.org/t/p/original/h8gHn0OzBoaefsYseUByqsmEDMY.jpg",
+        "ageGroup": "12",
+        "rating": 4.8,
+        "duration": 150,
+        "releaseYear": 2023,
+        "genres": ["Ação", "Aventura", "Ficção Científica"],
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+   "movies": [
+    {
+      "id": 2,
+      "title": "Oppenheimer",
+      "synopsis": "A história do físico J. Robert Oppenheimer e seu papel no desenvolvimento da bomba atômica.",
+      "thumbnail": "https://image.tmdb.org/t/p/original/ptpr0kGAckfQkJeJIt8st5dglvd.jpg",
+      "background": "https://image.tmdb.org/t/p/original/lsVY3SckxCEud6xvK7QFZD7gofC.jpg",
+      "ageGroup": "14",
+      "rating": 4.9,
+      "duration": 180,
+      "releaseYear": 2023,
+      "genres": ["Drama", "História"],
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
+      "id": 3,
+      "title": "Barbie",
+      "synopsis": "Barbie e Ken vivem aventuras fora de Barbieland e descobrem o mundo real.",
+      "thumbnail": "https://image.tmdb.org/t/p/original/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+      "background": "https://image.tmdb.org/t/p/original/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg",
+      "ageGroup": "10",
+      "rating": 4.5,
+      "duration": 114,
+      "releaseYear": 2023,
+      "genres": ["Comédia", "Aventura"],
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
+      "id": 4,
+      "title": "Top Gun: Maverick",
+      "synopsis": "A sinopse de Top Gun é a seguinte: Pete 'Maverick' Mitchell (Tom Cruise) é um jovem piloto de caça da Marinha dos Estados Unidos que é selecionado para participar do curso Top Gun na Navy Fighter Weapons School. Durante sua jornada, ele enfrenta um rival e tenta lidar com o fato de estar apaixonado enquanto frequenta a escola de aviação. O filme destaca a competição entre os pilotos e os desafios que eles enfrentam no treinamento.",
+      "thumbnail": "https://image.tmdb.org/t/p/original/8v3lrllHYRrqEdYWLyscH4RGFDO.jpg",
+      "background": "https://image.tmdb.org/t/p/original/AaV1YIdWKnjAIAOe8UUKBFm327v.jpg",
+      "ageGroup": "12",
+      "rating": 4.7,
+      "duration": 131,
+      "releaseYear": 2022,
+      "genres": ["Ação", "Drama"],
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
+      "id": 5,
+      "title": "John Wick 4: Baba Yaga",
+      "synopsis": "Com o preço por sua cabeça cada vez maior, John Wick leva sua luta contra a Alta Cúpula global enquanto procura os jogadores mais poderosos do submundo.",
+      "thumbnail": "https://image.tmdb.org/t/p/original/rXTqhpkpj6E0YilQ49PK1SSqLhm.jpg",
+      "background": "https://image.tmdb.org/t/p/original/kBBMF7GWYXzdRSk5w4xwip7yk3U.jpg",
+      "ageGroup": "16",
+      "rating": 4.6,
+      "duration": 169,
+      "releaseYear": 2023,
+      "genres": ["Ação", "Thriller", "Crime"],
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
+      "id": 6,
+      "title": "Avatar: O Caminho da Água",
+      "synopsis": "Jake e Neytiri vivem novas aventuras enquanto protegem sua família em Pandora.",
+      "thumbnail": "https://image.tmdb.org/t/p/original/mbYQLLluS651W89jO7MOZcLSCUw.jpg",
+      "background": "https://image.tmdb.org/t/p/original/198vrF8k7mfQ4FjDJsBmdQcaiyq.jpg",
+      "ageGroup": "12",
+      "rating": 4.7,
+      "duration": 192,
+      "releaseYear": 2022,
+      "genres": ["Ficção Científica", "Aventura"],
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
+      "id": 7,
+      "title": "Pantera Negra: Wakanda Para Sempre",
+      "synopsis": "A nação de Wakanda luta para proteger seu povo após a morte do Rei T'Challa.",
+      "thumbnail": "https://image.tmdb.org/t/p/original/nj9cgMhqXQJkXutKmvVelKNP1Aa.jpg",
+      "background": "https://image.tmdb.org/t/p/original/xDMIl84Qo5Tsu62c9DGWhmPI67A.jpg",
+      "ageGroup": "12",
+      "rating": 4.3,
+      "duration": 161,
+      "releaseYear": 2022,
+      "genres": ["Ação", "Aventura"],
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
+      "id": 8,
+      "title": "Duna",
+      "synopsis": "Paul Atreides viaja ao planeta mais perigoso do universo para garantir o futuro de sua família.",
+      "thumbnail": "https://image.tmdb.org/t/p/original/obhGsx4PE9OzsVGtIfoLAIIWGNb.jpg",
+      "background": "https://image.tmdb.org/t/p/original/jYEW5xZkZk2WTrdbMGAPFuBqbDc.jpg",
+      "ageGroup": "14",
+      "rating": 4.6,
+      "duration": 155,
+      "releaseYear": 2021,
+      "genres": ["Ficção Científica", "Aventura"],
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
+      "id": 9,
+      "title": "Interestelar",
+      "synopsis": "Um grupo de exploradores viaja através de um buraco de minhoca em busca de um novo lar para a humanidade.",
+      "thumbnail": "https://image.tmdb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+      "background": "https://image.tmdb.org/t/p/original/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg",
+      "ageGroup": "10",
+      "rating": 4.9,
+      "duration": 169,
+      "releaseYear": 2014,
+      "genres": ["Ficção Científica", "Drama"],
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
+      "id": 10,
+      "title": "Inception",
+      "synopsis": "Um ladrão que invade sonhos recebe a missão de implantar uma ideia na mente de um alvo.",
+      "thumbnail": "https://image.tmdb.org/t/p/original/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+      "background": "https://image.tmdb.org/t/p/original/s3TBrRGB1iav7gFOCNx3H31MoES.jpg",
+      "ageGroup": "12",
+      "rating": 4.8,
+      "duration": 148,
+      "releaseYear": 2010,
+        "genres": ["Ação", "Ficção Científica"],
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    }
+  ],
+   "series": [
+    {
+      "id": 3,
+      "title": "The Witcher",
+      "synopsis": "Geralt de Rívia, um caçador de monstros mutante, luta para encontrar seu lugar em um mundo onde as pessoas muitas vezes são mais perversas do que as bestas.",
+      "releaseYear": 2019,
+      "ageGroup": "18",
+      "rating": 4.6,
+      "duration": 60,
+      "genres": ["Drama", "Fantasia", "Ação"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/zrPpUlehQaBf8YX2NrVrKK8IEpf.jpg",
+      "background": "https://image.tmdb.org/t/p/w1280/7vjaCdMw15FEbXyLQTVa04URsPm.jpg",
+      "featured": true,
+      "numberOfSeasons": 3,
+      "status": "Em andamento",
+      "nextEpisodeDate": "2024-11-15",
+      "episodes": [
+        {
+          "id": 301,
+          "title": "O Fim do Começo",
+          "synopsis": "Geralt luta contra uma poderosa feiticeira e descobre segredos sobre o destino de Ciri.",
+          "duration": 61,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2019-12-20",
+          "thumbnail": "https://image.tmdb.org/t/p/w1280/7vjaCdMw15FEbXyLQTVa04URsPm.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        },
+        {
+          "id": 302,
+          "title": "Quatro Marcas",
+          "synopsis": "Geralt e Jaskier enfrentam um djinn enquanto Yennefer busca poder.",
+          "duration": 59,
+          "episodeNumber": 2,
+          "seasonNumber": 1,
+          "releaseDate": "2019-12-20",
+          "thumbnail": "https://image.tmdb.org/t/p/w1280/7vjaCdMw15FEbXyLQTVa04URsPm.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "The Mandalorian",
+      "synopsis": "Um caçador de recompensas viaja pela galáxia protegendo uma criança misteriosa.",
+      "releaseYear": 2019,
+      "ageGroup": "12",
+      "rating": 4.7,
+      "duration": 40,
+      "genres": ["Ficção Científica", "Ação", "Aventura"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
+      "background": "https://image.tmdb.org/t/p/w1280/9ijMGlJKqcslswWUzTEwScm82Gs.jpg",
+      "featured": false,
+      "numberOfSeasons": 3,
+      "status": "Em andamento",
+      "nextEpisodeDate": "2024-10-05",
+      "episodes": [
+        {
+          "id": 401,
+          "title": "Capítulo 1: O Mandaloriano",
+          "synopsis": "O Mandaloriano aceita uma missão secreta que muda seu destino.",
+          "duration": 39,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2019-11-12",
+          "thumbnail": "https://image.tmdb.org/t/p/w1280/9ijMGlJKqcslswWUzTEwScm82Gs.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        },
+        {
+          "id": 402,
+          "title": "Capítulo 2: A Criança",
+          "synopsis": "O Mandaloriano protege a Criança enquanto foge de caçadores rivais.",
+          "duration": 32,
+          "episodeNumber": 2,
+          "seasonNumber": 1,
+          "releaseDate": "2019-11-15",
+          "thumbnail": "https://image.tmdb.org/t/p/w1280/9ijMGlJKqcslswWUzTEwScm82Gs.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "The Boys",
+      "synopsis": "Em um mundo onde super-heróis abusam da fama e do poder, um grupo de vigilantes decide desmascará-los.",
+      "releaseYear": 2019,
+      "ageGroup": "18",
+      "rating": 4.8,
+      "duration": 55,
+      "genres": ["Drama", "Ação", "Comédia"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/mY7SeH4HFFxW1hiI6cWuwCRKptN.jpg",
+      "background": "https://image.tmdb.org/t/p/w1280/stTEycfG9928HYGEISBFaG1ngjM.jpg",
+      "featured": true,
+      "numberOfSeasons": 4,
+      "status": "Em andamento",
+      "nextEpisodeDate": "2024-09-15",
+      "episodes": [
+        {
+          "id": 501,
+          "title": "O Nome do Jogo",
+          "synopsis": "Hughie sofre uma tragédia e conhece Billy Butcher, que tem suas próprias razões para odiar os super-heróis.",
+          "duration": 61,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2019-07-26",
+          "thumbnail": "https://image.tmdb.org/t/p/w1280/stTEycfG9928HYGEISBFaG1ngjM.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Loki",
+      "synopsis": "Após roubar o Tesseract, Loki se torna um prisioneiro da TVA e embarca em uma jornada no multiverso.",
+      "releaseYear": 2021,
+      "ageGroup": "12",
+      "rating": 4.7,
+      "duration": 52,
+      "genres": ["Ficção Científica", "Ação"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/voHUmluYmKyleFkTu3lOXQG702u.jpg",
+      "background": "https://image.tmdb.org/t/p/original/bZGAX8oMDm3Mo5i0ZPKh9G2OcaO.jpg",
+      "featured": true,
+      "numberOfSeasons": 2,
+      "status": "Em andamento",
+      "nextEpisodeDate": "2024-08-12",
+      "episodes": [
+        {
+          "id": 601,
+          "title": "Glorioso Propósito",
+          "synopsis": "Loki enfrenta as consequências de suas escolhas enquanto explora a TVA.",
+          "duration": 51,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2021-06-09",
+          "thumbnail": "https://image.tmdb.org/t/p/original/oH4Sjpt6bDPgeVCwMX6dBJJj5Oe.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "The Last of Us",
+      "synopsis": "Vinte anos após a queda da civilização, Joel deve levar Ellie através dos EUA em uma jornada brutal.",
+      "releaseYear": 2023,
+      "ageGroup": "18",
+      "rating": 4.9,
+      "duration": 60,
+      "genres": ["Drama", "Ação", "Terror"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg",
+      "background": "https://image.tmdb.org/t/p/original/lY2DhbA7Hy44fAKddr06UrXWWaQ.jpg",
+      "featured": true,
+      "numberOfSeasons": 1,
+      "status": "Em andamento",
+      "nextEpisodeDate": "2024-12-10",
+      "episodes": [
+        {
+          "id": 701,
+          "title": "Quando Você Estiver Perdido na Escuridão",
+          "synopsis": "Joel e Ellie fogem de Boston enquanto enfrentam os primeiros perigos.",
+          "duration": 81,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2023-01-15",
+          "thumbnail": "https://image.tmdb.org/t/p/original/z7z6zTfEeasEov6Y2ezVOxW5tsb.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Dark",
+      "synopsis": "Quatro famílias envolvidas em um mistério que se estende por várias gerações e viagens no tempo.",
+      "releaseYear": 2017,
+      "ageGroup": "16",
+      "rating": 4.8,
+      "duration": 55,
+      "genres": ["Drama", "Mistério", "Ficção Científica"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/apbrbWs8M9lyOpJYU5WXrpFbk1Z.jpg",
+      "background": "https://image.tmdb.org/t/p/original/nOpary3p4f9cazyj1bCGkBNoaIS.jpg",
+      "featured": true,
+      "numberOfSeasons": 3,
+      "status": "Finalizada",
+      "nextEpisodeDate": null,
+      "episodes": [
+        {
+          "id": 801,
+          "title": "Segredos",
+          "synopsis": "O desaparecimento de uma criança expõe os segredos sombrios de uma cidade alemã.",
+          "duration": 52,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2017-12-01",
+          "thumbnail": "https://image.tmdb.org/t/p/original/nOpary3p4f9cazyj1bCGkBNoaIS.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Peaky Blinders",
+      "synopsis": "A história da família Shelby, líderes de uma gangue criminosa na Inglaterra pós-Primeira Guerra Mundial.",
+      "releaseYear": 2013,
+      "ageGroup": "18",
+      "rating": 4.7,
+      "duration": 58,
+      "genres": ["Crime", "Drama"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/vUUqzWa2LnHIVqkaKVlVGkVcZIW.jpg",
+      "background": "https://image.tmdb.org/t/p/original/8V1XPEDLtJoxOWlE6gYzn2sQaMp.jpg",
+      "featured": false,
+      "numberOfSeasons": 6,
+      "status": "Finalizada",
+      "nextEpisodeDate": null,
+      "episodes": [
+        {
+          "id": 901,
+          "title": "Episódio 1",
+          "synopsis": "Thomas Shelby lidera os Peaky Blinders enquanto enfrenta novos inimigos.",
+          "duration": 57,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2013-09-12",
+          "thumbnail": "https://image.tmdb.org/t/p/original/bZ08ZTYJXSBUTsh29ycFZkvL3qP.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Vikings",
+      "synopsis": "A saga de Ragnar Lothbrok e seus filhos enquanto exploram e conquistam terras.",
+      "releaseYear": 2013,
+      "ageGroup": "18",
+      "rating": 4.6,
+      "duration": 44,
+      "genres": ["Drama", "Ação", "Aventura"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/bQLrHIRNEkE3PdIWQrZHynQZazu.jpg",
+      "background": "https://image.tmdb.org/t/p/w1280/gB8X93CJZAhXJP5fd3p2HZZ21Mg.jpg",
+      "featured": false,
+      "numberOfSeasons": 6,
+      "status": "Finalizada",
+      "nextEpisodeDate": null,
+      "episodes": [
+        {
+          "id": 1001,
+          "title": "Ritos de Passagem",
+          "synopsis": "Ragnar desafia a autoridade de Earl Haraldson ao propor novas rotas de invasão.",
+          "duration": 45,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2013-03-03",
+          "thumbnail": "https://image.tmdb.org/t/p/w1280/gB8X93CJZAhXJP5fd3p2HZZ21Mg.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Better Call Saul",
+      "synopsis": "A transformação de Jimmy McGill no advogado criminal Saul Goodman.",
+      "releaseYear": 2015,
+      "ageGroup": "16",
+      "rating": 4.8,
+      "duration": 47,
+      "genres": ["Drama", "Crime"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/fC2HDm5t0kHl7mTm7jxMR31b7by.jpg",
+      "background": "https://image.tmdb.org/t/p/original/hPea3Qy5Gd6z4kJLUruBbwAH8Rm.jpg",
+      "featured": true,
+      "numberOfSeasons": 6,
+      "status": "Finalizada",
+      "nextEpisodeDate": null,
+      "episodes": [
+        {
+          "id": 1101,
+          "title": "Uno",
+          "synopsis": "Jimmy McGill tenta defender um cliente enquanto lida com dificuldades financeiras.",
+          "duration": 53,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2015-02-08",
+          "thumbnail": "https://image.tmdb.org/t/p/original/oyGRbr6a8uQeNRuamdI13AijMiW.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "The Crown",
+      "synopsis": "A história do reinado da Rainha Elizabeth II e os eventos que moldaram o século XX.",
+      "releaseYear": 2016,
+      "ageGroup": "14",
+      "rating": 4.6,
+      "duration": 58,
+      "genres": ["Drama", "História"],
+      "thumbnail": "https://image.tmdb.org/t/p/original/ehUMAA3qDR5HNor9DB60g72KNQZ.jpg",
+      "background": "https://image.tmdb.org/t/p/original/8VXhcrl5z2I1zEU9X3pkkNrZlD.jpg",
+      "featured": false,
+      "numberOfSeasons": 6,
+      "status": "Finalizada",
+      "nextEpisodeDate": null,
+      "episodes": [
+        {
+          "id": 1201,
+          "title": "Wolferton Splash",
+          "synopsis": "A saúde do rei piora enquanto Elizabeth e Philip embarcam em uma viagem.",
+          "duration": 61,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2016-11-04",
+          "thumbnail": "https://image.tmdb.org/t/p/original/8VXhcrl5z2I1zEU9X3pkkNrZlD.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Sherlock",
+      "synopsis": "A clássica história de Sherlock Holmes em uma Londres contemporânea.",
+      "releaseYear": 2010,
+      "ageGroup": "14",
+      "rating": 4.7,
+      "duration": 88,
+      "genres": ["Crime", "Mistério", "Drama"],
+      "thumbnail": "https://image.tmdb.org/t/p/original/7WTsnHkbA0FaG6R9twfFde0I9hl.jpg",
+      "background": "https://image.tmdb.org/t/p/original/hmLTIRtVyTHShJl2Wb8LHmvUgJm.jpg",
+      "featured": true,
+      "numberOfSeasons": 4,
+      "status": "Finalizada",
+      "nextEpisodeDate": null,
+      "episodes": [
+        {
+          "id": 1301,
+          "title": "Um Estudo em Rosa",
+          "synopsis": "Sherlock e John investigam uma série de suicídios misteriosos.",
+          "duration": 88,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2010-07-25",
+          "thumbnail": "https://image.tmdb.org/t/p/original/3CkMM9v58CCkz8xRfgQMsPBjw7t.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Westworld",
+      "synopsis": "Um parque futurista permite aos visitantes viver suas fantasias, mas tudo sai do controle.",
+      "releaseYear": 2016,
+      "ageGroup": "18",
+      "rating": 4.5,
+      "duration": 60,
+      "genres": ["Ficção Científica", "Drama"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/y55oBgf6bVMI7sFNXwJDrSIxPQt.jpg",
+      "background": "https://image.tmdb.org/t/p/original/rX5hvSRB2k4YoIvRg6Zky52rWk0.jpg",
+      "featured": false,
+      "numberOfSeasons": 4,
+      "status": "Finalizada",
+      "nextEpisodeDate": null,
+      "episodes": [
+        {
+          "id": 1401,
+          "title": "O Origens",
+          "synopsis": "O parque recebe novos visitantes enquanto anfitriões começam a lembrar de eventos passados.",
+          "duration": 68,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2016-10-02",
+          "thumbnail": "https://image.tmdb.org/t/p/original/39Cd9HtHzXMxiepB2qyWX92jSlT.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "The Office",
+      "synopsis": "A vida diária dos funcionários de uma empresa de papel em Scranton.",
+      "releaseYear": 2005,
+      "ageGroup": "12",
+      "rating": 4.8,
+      "duration": 22,
+      "genres": ["Comédia"],
+      "thumbnail": "https://image.tmdb.org/t/p/w500/qWnJzyZhyy74gjpSjIXWmuk0ifX.jpg",
+      "background": "https://image.tmdb.org/t/p/original/bX6Sypdpk0r8YFdVPoc3yeyvSmm.jpg",
+      "featured": true,
+      "numberOfSeasons": 9,
+      "status": "Finalizada",
+      "nextEpisodeDate": null,
+      "episodes": [
+        {
+          "id": 1501,
+          "title": "O Piloto",
+          "synopsis": "Michael Scott apresenta os colegas de trabalho e a rotina da Dunder Mifflin.",
+          "duration": 23,
+          "episodeNumber": 1,
+          "seasonNumber": 1,
+          "releaseDate": "2005-03-24",
+          "thumbnail": "https://image.tmdb.org/t/p/w1280/oKIBhzZzDX07SoE2bOLhq2EE8rf.jpg",
+          "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        }
+      ]
+    }
+  ]
+} 

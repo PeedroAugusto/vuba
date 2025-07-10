@@ -1,0 +1,229 @@
+@use '../../styles/global.scss' as *;
+
+.movies {
+    min-height: 100vh;
+    background: $background-color;
+}
+
+.featured {
+    position: relative;
+    height: 70vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center 20%;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg,
+                rgba(0, 5, 15, 0.95) 0%,
+                rgba(0, 5, 15, 0.8) 0%,
+                rgba(0, 5, 15, 0.4) 8%,
+                transparent 100%);
+    }
+
+    .vignette {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(0deg,
+                rgb(0, 5, 15) 0%,
+                rgba(0, 5, 15, 0.8) 40%,
+                transparent 65%);
+    }
+
+    .content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 80px max(54px, 4%);
+        color: white;
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 2px;
+            line-height: 1.1;
+            position: relative;
+            animation: slideFromLeft 0.8s ease-out;
+            padding-left: 24px;
+
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 6px;
+                height: 70%;
+                background: $main-color;
+                border-radius: 3px;
+            }
+        }
+
+        .meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            animation: slideFromLeft 0.8s ease-out 0.2s backwards;
+
+            span {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 12px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 20px;
+                backdrop-filter: blur(10px);
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                    transform: translateY(-2px);
+                }
+            }
+
+            .rating {
+                color: #fff800;
+                font-weight: 600;
+
+                i {
+                    font-size: 1.2rem;
+                }
+            }
+
+            .ageRating {
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .synopsis {
+            max-width: 45%;
+            margin-bottom: 32px;
+            font-weight: 400;
+            line-height: 1.7;
+            font-size: clamp(1rem, 1.2vw, 1.2rem);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            color: rgba(255, 255, 255, 0.9);
+            animation: slideFromLeft 0.8s ease-out 0.4s backwards;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            animation: slideFromLeft 0.8s ease-out 0.6s backwards;
+
+            button {
+                height: 50px;
+                min-width: 180px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                border: none;
+                border-radius: 25px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                position: relative;
+                overflow: hidden;
+
+                i {
+                    font-size: 1.4rem;
+                    transition: transform 0.3s ease;
+                }
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 150%;
+                    height: 150%;
+                    background: rgba(255, 255, 255, 0.1);
+                    transform: translate(-50%, -50%) rotate(45deg) translateY(100%);
+                    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+
+                &:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+                    &::before {
+                        transform: translate(-50%, -50%) rotate(45deg) translateY(0);
+                    }
+
+                    i {
+                        transform: scale(1.2);
+                    }
+                }
+            }
+
+            .playButton {
+                background: linear-gradient(135deg, $main-color, darken($main-color, 15%));
+                color: white;
+
+                &:hover {
+                    background: linear-gradient(135deg, lighten($main-color, 5%), darken($main-color, 10%));
+                }
+            }
+
+            .moreButton {
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
+                padding: 0px 15px;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.15);
+                }
+            }
+        }
+    }
+}
+
+.carousels {
+    position: relative;
+    z-index: 2;
+    padding: 0 max(54px, 4%);
+    position: relative;
+    padding: 40px 0;
+    background: #001233;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: -100px;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background: linear-gradient(to bottom, transparent, #001233);
+        pointer-events: none;
+    }
+}
+
+@keyframes slideFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
