@@ -14,7 +14,8 @@ const convertMovie = (movie: any): Movie => {
     releaseYear: movie.releaseYear,
     genres: movie.genres,
     videoUrl: movie.videoUrl,
-    featured: movie.featured
+    featured: movie.featured,
+    genre: movie.genre
   };
 };
 

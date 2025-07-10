@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import styles from './NextEpisodePreview.module.scss';
 import { Episode } from '../../types/Episode';
 import { Serie } from '../../types/Serie';

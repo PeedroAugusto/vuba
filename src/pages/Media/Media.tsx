@@ -46,7 +46,7 @@ const MediaMeta: React.FC<{ media: Movie | Serie }> = ({ media }) => (
             <span>{media.duration} min</span>
         )}
         <span className={styles.ageRating}>{media.ageGroup}</span>
-        {media.genres.map((genre, index) => (
+        {media.genres.map((genre) => (
             <span key={genre} className={styles.genre}>{genre}</span>
         ))}
     </div>

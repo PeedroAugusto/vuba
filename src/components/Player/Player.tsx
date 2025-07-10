@@ -31,7 +31,6 @@ export const Player: React.FC<PlayerProps> = ({
     const [showCenterButton, setShowCenterButton] = useState(true);
     const [showMediaInfo, setShowMediaInfo] = useState(false);
     const [showNextSuggestion, setShowNextSuggestion] = useState(false);
-    const [isVideoEnded, setIsVideoEnded] = useState(false);
     const [showIntro, setShowIntro] = useState(true);
     const controlsTimeoutRef = useRef<number>();
     const mediaInfoTimeoutRef = useRef<number>();
@@ -109,11 +108,9 @@ export const Player: React.FC<PlayerProps> = ({
                 } else if (nextSuggestion) {
                     setShowNextSuggestion(true);
                 }
-                setIsVideoEnded(true);
             } else {
                 setShowNextEpisodePreview(false);
                 setShowNextSuggestion(false);
-                setIsVideoEnded(false);
             }
         };
 

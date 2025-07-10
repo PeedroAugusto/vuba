@@ -3,12 +3,6 @@ import styles from './Series.module.scss';
 import { Navbar } from '../../components/Navbar/Navbar';
 import { Carousel } from "../../components/List/Carousel/Carousel";
 import { useMedia } from '../../hooks/useMedia';
-import { Serie } from '../../types/Serie';
-
-interface GenreGroup {
-  title: string;
-  series: Serie[];
-}
 
 const Series: React.FC = () => {
   const { series, featuredSerie, loading } = useMedia();

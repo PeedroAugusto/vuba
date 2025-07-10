@@ -3,17 +3,9 @@ import styles from './Home.module.scss';
 import { Navbar } from '../../components/Navbar/Navbar';
 import { Carousel } from "../../components/List/Carousel/Carousel";
 import { useMedia } from '../../hooks/useMedia';
-import { Movie } from '../../types/Movie';
-import { Serie } from '../../types/Serie';
-
-interface GenreGroup {
-  title: string;
-  movies: Movie[];
-  series: Serie[];
-}
 
 const Home: React.FC = () => {
-  const { movies, featuredMovie, loading, series, featuredSerie } = useMedia();
+  const { movies, featuredMovie, loading, series } = useMedia();
 
   // Memoize os grupos de gênero
   const genreGroups = useMemo(() => {

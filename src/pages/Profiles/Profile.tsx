@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import styles from './Profile.module.scss';
 
 export const Profile = () => {

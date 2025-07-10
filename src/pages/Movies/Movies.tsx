@@ -3,12 +3,6 @@ import styles from './Movies.module.scss';
 import { Navbar } from '../../components/Navbar/Navbar';
 import { Carousel } from "../../components/List/Carousel/Carousel";
 import { useMedia } from '../../hooks/useMedia';
-import { Movie } from '../../types/Movie';
-
-interface GenreGroup {
-  title: string;
-  movies: Movie[];
-}
 
 const Movies: React.FC = () => {
   const { movies, featuredMovie, loading } = useMedia();
