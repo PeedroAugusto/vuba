@@ -1,51 +1,49 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import styles from './NextEpisodePreview.module.scss';
 import { Episode } from '../../types/Episode';
-import { Serie } from '../../types/Serie';
 
 interface NextEpisodePreviewProps {
-    serie: Serie;
-    nextEpisode: Episode;
-    onPlayNextEpisode: () => void;
-    timeRemaining: number;
+    episode: Episode;
+    onPlay: () => void;
+    currentTime: number;
+    duration: number;
 }
 
 export const NextEpisodePreview: React.FC<NextEpisodePreviewProps> = ({
-    serie,
-    nextEpisode,
-    onPlayNextEpisode,
-    timeRemaining
+    episode,
+    onPlay,
+    currentTime,
+    duration
 }) => {
-    const formatTime = useCallback((seconds: number) => {
-        return Math.max(0, Math.ceil(seconds));
-    }, []);
+    // Calcula quantos segundos faltam baseado no tempo real do vídeo
+    const timeRemaining = Math.max(0, Math.floor(duration - currentTime));
+
+    // Se chegou a zero, dispara o próximo episódio
+    if (timeRemaining === 0) {
+        onPlay();
+    }
 
     return (
         <div className={styles.previewContainer}>
             <div className={styles.previewContent}>
-                <div className={styles.header}>
-                    <span>Próximo episódio em</span>
-                    <div className={styles.countdown}>
-                        <span>{formatTime(timeRemaining)}s</span>
-                    </div>
-                </div>
-                
                 <div className={styles.episodeInfo}>
                     <div className={styles.thumbnail}>
-                        {nextEpisode.thumbnail && (
-                            <img src={nextEpisode.thumbnail} alt={nextEpisode.title} />
+                        {episode.thumbnail && (
+                            <img src={episode.thumbnail} alt={episode.title} />
                         )}
                     </div>
                     
                     <div className={styles.details}>
-                        <h3>{serie.title}</h3>
-                        <h4>T{nextEpisode.seasonNumber} E{nextEpisode.episodeNumber} - {nextEpisode.title}</h4>
-                        <p>{nextEpisode.synopsis}</p>
+                        <div className={styles.countdown}>
+                            <span>Próximo episódio em {timeRemaining}s</span>
+                        </div>
+                        <h4>T{episode.seasonNumber} E{episode.episodeNumber} - {episode.title}</h4>
+                        <p>{episode.synopsis}</p>
                         
                         <div className={styles.actions}>
-                            <button onClick={onPlayNextEpisode} className={styles.playButton}>
+                            <button onClick={onPlay} className={styles.playNextButton}>
                                 <i className='bx bx-play'></i>
-                                <span>Reproduzir</span>
+                                <span>Reproduzir Agora</span>
                             </button>
                         </div>
                     </div>

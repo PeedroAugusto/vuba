@@ -4,761 +4,411 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: black;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
 
-    video {
+    &[data-showing-controls="true"] {
+        cursor: default;
+    }
+
+    &[data-showing-controls="false"] {
+        cursor: none;
+    }
+
+    .videoPlayer {
         width: 100%;
         height: 100%;
-        object-fit: contain;
-        z-index: 1;
-    }
-
-    .clickArea {
+        object-fit: cover;
+        background-color: black;
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 2;
+    }
+
+    .backButton {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        background: none;
+        border: none;
+        color: white;
         cursor: pointer;
-        background: transparent;
+        z-index: 10;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
 
-        // Não capturar cliques quando os controles estiverem visíveis
-        &.controlsVisible {
-            pointer-events: none;
+        i {
+            font-size: 24px;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
         }
     }
 
-    .centerPlayButton {
+    .controls {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 999;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-
-        &.visible {
-            opacity: 1;
-            pointer-events: auto;
-            animation: pulse 2s infinite;
-        }
-
-        button {
-            background: rgba(0, 0, 0, 0.7);
-            border: none;
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(4px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-
-            &:hover {
-                background: var(--primary-color);
-                transform: scale(1.1);
-                box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
-            }
-
-            &:active {
-                transform: scale(0.95);
-            }
-
-            i {
-                font-size: 28px;
-                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-            }
-        }
-    }
-
-    .overlay {
-        position: absolute;
-        top: 0;
+        bottom: 0;
         left: 0;
         right: 0;
-        bottom: 0;
-        background: linear-gradient(180deg,
-                rgba(0, 0, 0, 0.8) 0%,
-                transparent 15%,
-                transparent 70%,
-                rgba(0, 0, 0, 0.9) 100%);
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.4) 20%, rgba(0, 0, 0, 0.9));
+        padding: 24px;
         opacity: 0;
-        transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
+        transition: all 0.4s ease;
         pointer-events: none;
 
         &.visible {
             opacity: 1;
             pointer-events: auto;
+        }
+    }
 
-            .progressBarContainer {
-                pointer-events: auto;
-                z-index: 10;
+    .progressContainer {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .progressBar {
+        flex: 1;
+        height: 3px;
+        background-color: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        position: relative;
+        border-radius: 1.5px;
+        transition: all 0.2s ease;
+
+        &:hover {
+            height: 5px;
+
+            .progress::after {
+                transform: scale(1);
+                opacity: 1;
             }
         }
 
-        .topControls {
+        .buffered {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            pointer-events: auto;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 1.5px;
+            transition: width 0.2s ease;
+        }
 
-            button {
-                background: none;
-                border: none;
-                color: white;
-                cursor: pointer;
-                padding: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+        .progress {
+            position: absolute;
+            height: 100%;
+            background-color: $main-color;
+            border-radius: 1.5px;
+            transition: width 0.2s ease;
+
+            &::after {
+                content: '';
+                position: absolute;
+                right: -6px;
+                top: 50%;
+                transform: scale(0);
+                width: 12px;
+                height: 12px;
+                background-color: $main-color;
+                border-radius: 50%;
+                margin-top: -6px;
                 transition: all 0.2s ease;
-
-                i {
-                    font-size: 24px;
-                    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-                }
-
-                &:hover {
-                    transform: scale(1.1);
-                }
-            }
-        }
-
-        .progressBarContainer {
-            width: 100%;
-            padding: 0 20px;
-            margin-bottom: 20px;
-            position: relative;
-            pointer-events: auto;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            z-index: 11;
-
-            .progressBar {
-                flex: 1;
-                height: 4px;
-                background: rgba(255, 255, 255, 0.2);
-                cursor: pointer;
-                transform-origin: center center;
-                transition: transform 0.2s ease;
-                position: relative;
-                border-radius: 2px;
-
-                &:hover {
-                    transform: scaleY(1.5);
-
-                    .progressFilled::after {
-                        transform: scale(1);
-                    }
-                }
-
-                .progressFilled {
-                    height: 100%;
-                    background: #001845;
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    transition: width 0.1s linear;
-
-                    &::after {
-                        content: "";
-                        position: absolute;
-                        right: -6px;
-                        top: -4px;
-                        transform: translate(0, -50%) scale(0);
-                        width: 19px;
-                        height: 12px;
-                        background: #001845;
-                        border-radius: 50%;
-                        transition: transform 0.2s ease;
-                        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-                    }
-                }
-            }
-
-            .time {
-                color: rgba(255, 255, 255, 0.9);
-                font-size: 14px;
-                font-weight: 500;
-                white-space: nowrap;
-                min-width: 85px;
-            }
-        }
-
-        .bottomControls {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 20px 20px;
-            pointer-events: auto;
-        }
-
-        .leftControls {
-            width: 33%;
-            justify-content: left;
-        }
-
-        .rightControls {
-            width: 33%;
-            justify-content: right;
-        }
-
-
-        .leftControls,
-        .rightControls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .centerControls {
-            flex: 1;
-            width: 33%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .mediaInfo {
-                text-align: center;
-                color: white;
-                font-size: 95%;
-                font-weight: 600;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-
-                font-weight: 800;
-                text-transform: uppercase;
-                margin-bottom: 24px;
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-                letter-spacing: 2px;
-                line-height: 1.1;
-                position: relative;
-
-
-                span {
-                    color: rgba(255, 255, 255, 0.7);
-                    font-weight: 500;
-                }
-            }
-        }
-
-        button {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-            &:hover {
-                transform: scale(1.1);
-            }
-
-            i {
-                font-size: 24px;
-                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-            }
-        }
-
-        .skipControls {
-            display: flex;
-            gap: 15px;
-
-            .skipButton {
-                display: flex;
-                align-items: center;
-                gap: 4px;
-                padding: 6px 14px;
-                border-radius: 16px;
-                font-size: 13px;
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(4px);
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-                &:hover {
-                    background: var(--primary-color);
-                    transform: scale(1.05);
-                }
-
-                span {
-                    font-size: 12px;
-                    font-weight: 500;
-                }
-
-                i {
-                    font-size: 18px;
-                }
-            }
-        }
-
-        .volumeControl {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-            padding: 4px;
-
-            button {
-                padding: 8px;
-                transition: all 0.3s ease;
-
-                &:hover {
-                    background: var(--primary-color);
-                    transform: scale(1.1);
-                }
-
-                i {
-                    font-size: 20px;
-                }
-            }
-
-            .volumeSlider {
-                width: 0;
-                overflow: hidden;
                 opacity: 0;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                position: relative;
-                height: 24px;
-                display: flex;
-                align-items: center;
-
-                &::before {
-                    content: '';
-                    position: absolute;
-                    left: -10px;
-                    right: -10px;
-                    top: -10px;
-                    bottom: -10px;
-                    background: rgba(0, 0, 0, 0.8);
-                    border-radius: 12px;
-                    z-index: -1;
-                    opacity: 0;
-                    transition: opacity 0.3s ease;
-                }
-            }
-
-            &:hover {
-                .volumeSlider {
-                    width: 80px;
-                    opacity: 1;
-                    margin-left: 4px;
-
-                    &::before {
-                        opacity: 1;
-                    }
-                }
-            }
-
-            input[type="range"] {
-                width: 100%;
-                height: 3px;
-                background: rgba(255, 255, 255, 0.2);
-                border-radius: 2px;
-                outline: none;
-                -webkit-appearance: none;
-                cursor: pointer;
-                margin: 0;
-
-                &::-webkit-slider-runnable-track {
-                    height: 3px;
-                    background: rgba(255, 255, 255, 0.2);
-                    border-radius: 2px;
-                }
-
-                &::-webkit-slider-thumb {
-                    -webkit-appearance: none;
-                    width: 12px;
-                    height: 12px;
-                    background: white;
-                    border-radius: 50%;
-                    cursor: pointer;
-                    margin-top: -4.5px;
-                    transition: all 0.2s ease;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
-                    &:hover {
-                        background: var(--primary-color);
-                        transform: scale(1.2);
-                    }
-                }
-
-                &::-webkit-slider-container {
-                    background: var(--primary-color);
-                }
+                box-shadow: 0 0 10px rgba($main-color, 0.5);
             }
         }
     }
 
-    @keyframes pulse {
-        0% {
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        50% {
-            transform: translate(-50%, -50%) scale(1.05);
-        }
-
-        100% {
-            transform: translate(-50%, -50%) scale(1);
-        }
+    .timeDisplay {
+        color: white;
+        font-size: 14px;
+        font-weight: 500;
+        opacity: 0.9;
+        min-width: 48px;
+        text-align: center;
     }
 
-    .speedControl {
-        button {
-            padding: 6px 12px;
-            border-radius: 6px;
+    .controlsRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .leftControls {
+
+        justify-content: left;
+        width: 33%;
+    }
+
+    .leftControls,
+    .rightControls {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .rightControls {
+
+        justify-content: right;
+        width: 33%;
+    }
+
+    .centerControls {
+        flex: 1;
+        width: 33%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mediaTitle {
+        text-align: center;
+
+        .seriesInfo {
+            color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
             font-weight: 500;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
-            letter-spacing: 0.5px;
+        }
+
+        h2 {
+            font-size: 100%;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-shadow: rgba(0, 0, 0, 0.8) 2px 2px 4px;
+            letter-spacing: 1.5px;
+            line-height: 1.1;
+            position: relative;
+            color: var(--primary-color);
+        }
+    }
+
+    button {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+
+        i {
+            font-size: 24px;
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
+        }
+
+        &:active {
+            transform: scale(1);
+        }
+    }
+
+    .volumeControl {
+        position: relative;
+        width: 100px;
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.2);
+            height: 3px;
+            border-radius: 1.5px;
+            outline: none;
+            transition: all 0.2s ease;
+
+            &::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 12px;
+                height: 12px;
+                background-color: $main-color;
+                border-radius: 50%;
+                transition: all 0.2s ease;
+                border: 2px solid white;
+            }
 
             &:hover {
-                background: rgba(255, 255, 255, 0.2);
+                &::-webkit-slider-thumb {
+                    transform: scale(1.2);
+                    box-shadow: 0 0 10px rgba($main-color, 0.5);
+                }
             }
         }
     }
 
     .episodeList {
         position: absolute;
-        right: 32px;
-        bottom: 90px;
-        background: linear-gradient(135deg,
-                rgba(0, 0, 0, 0.95) 0%,
-                rgba(20, 20, 20, 0.95) 100%);
-        backdrop-filter: blur(20px);
-        border-radius: 12px;
-        padding: 20px;
-        width: 420px;
-        max-height: 60vh;
-        overflow-y: auto;
-        z-index: 1001;
-        transform-origin: bottom right;
-        transform: scale(0.95);
-        opacity: 0;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-
-        &.visible {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .episodeListHeader {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
-            top: 0;
-            background: inherit;
-            z-index: 2;
-
-            h3 {
-                color: white;
-                font-size: 20px;
-                font-weight: 700;
-                margin: 0;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-
-            button {
-                padding: 8px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.1);
-                transition: all 0.3s ease;
-
-                &:hover {
-                    background: var(--primary-color);
-                    transform: scale(1.1);
-                }
-
-                i {
-                    font-size: 20px;
-                }
-            }
-        }
-
-        .episodeItem {
-            display: flex;
-            align-items: center;
-            padding: 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid transparent;
-            position: relative;
-            overflow: hidden;
-
-            &::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: linear-gradient(135deg,
-                        rgba(255, 255, 255, 0.1) 0%,
-                        rgba(255, 255, 255, 0) 100%);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-
-            &:hover {
-                background: rgba(255, 255, 255, 0.05);
-                border-color: rgba(255, 255, 255, 0.1);
-                transform: translateX(6px);
-
-                &::before {
-                    opacity: 1;
-                }
-
-                .episodeTitle {
-                    color: var(--primary-color);
-                }
-            }
-
-            &.active {
-                background: rgba(var(--primary-color-rgb), 0.15);
-                border-color: rgba(var(--primary-color-rgb), 0.3);
-
-                .episodeNumber {
-                    color: var(--primary-color);
-                    background: rgba(var(--primary-color-rgb), 0.1);
-                }
-
-                .episodeTitle {
-                    color: white;
-                    font-weight: 600;
-                }
-            }
-
-            .episodeNumber {
-                color: rgba(255, 255, 255, 0.7);
-                font-size: 16px;
-                min-width: 40px;
-                text-align: center;
-                font-weight: 600;
-                padding: 6px;
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 6px;
-                transition: all 0.3s ease;
-            }
-
-            .episodeInfo {
-                flex: 1;
-                margin-left: 14px;
-
-                .episodeTitle {
-                    color: rgba(255, 255, 255, 0.9);
-                    font-size: 15px;
-                    font-weight: 500;
-                    margin-bottom: 4px;
-                    transition: color 0.3s ease;
-                }
-
-                .episodeDuration {
-                    color: rgba(255, 255, 255, 0.5);
-                    font-size: 13px;
-                    display: flex;
-                    align-items: center;
-                    gap: 4px;
-
-                    &::before {
-                        content: '';
-                        width: 3px;
-                        height: 3px;
-                        background: rgba(255, 255, 255, 0.5);
-                        border-radius: 50%;
-                        display: inline-block;
-                    }
-                }
-            }
-
-            .playingIndicator {
-                color: var(--primary-color);
-                margin-left: 14px;
-                display: flex;
-                align-items: center;
-                background: rgba(var(--primary-color-rgb), 0.1);
-                padding: 6px;
-                border-radius: 50%;
-
-                i {
-                    font-size: 20px;
-                    filter: drop-shadow(0 2px 4px rgba(var(--primary-color-rgb), 0.3));
-                }
-            }
-        }
-
-        &::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        &::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            border: 2px solid transparent;
-            background-clip: padding-box;
-
-            &:hover {
-                background: rgba(255, 255, 255, 0.3);
-                border: 2px solid transparent;
-                background-clip: padding-box;
-            }
-        }
-    }
-
-    .mediaInfoOverlay {
-        position: absolute;
         top: 0;
-        left: 0;
         right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.85);
+        width: 400px;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 24px;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        z-index: 998;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-        padding: 90px;
 
         &.visible {
-            opacity: 1;
-            pointer-events: auto;
+            transform: translateX(0);
         }
+    }
 
-        &::after {
-            content: 'Pausado';
-            position: absolute;
-            bottom: 32px;
-            right: 32px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 16px;
-            font-weight: 500;
-        }
+    .episodeListHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-        .mediaInfoContent {
+        h3 {
             color: white;
-            max-width: 720px;
-            position: relative;
-            top: 25%;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+        }
 
-            .mediaTitle {
-                margin-bottom: 28px;
-
-                h2 {
-                    font-size: clamp(2rem, 4vw, 3.5rem);
-                    font-weight: 800;
-                    text-transform: uppercase;
-                    margin-bottom: 20px;
-                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-                    letter-spacing: 1.5px;
-                    line-height: 1.1;
-                    position: relative;
-                    color: var(--primary-color);
-                }
-
-                h3 {
-                    font-size: 28px;
-                    font-weight: 500;
-                    margin: 0 0 14px 0;
-                    color: rgba(255, 255, 255, 0.9);
-                }
-
-                span {
-                    font-size: 16px;
-                    color: rgba(255, 255, 255, 0.7);
-                    font-weight: 500;
-                }
-            }
-
-            .mediaDescription {
-                margin-bottom: 28px;
-
-                p {
-                    font-size: 18px;
-                    line-height: 1.5;
-                    color: rgba(255, 255, 255, 0.8);
-                    margin: 0;
-                }
-            }
-
-            .mediaMetadata {
-                display: flex;
-                gap: 28px;
-
-                .metadataItem {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 4px;
-
-                    .metadataLabel {
-                        font-size: 13px;
-                        color: rgba(255, 255, 255, 0.6);
-                        font-weight: 500;
-                        text-transform: uppercase;
-                        letter-spacing: 0.5px;
-                    }
-
-                    span:last-child {
-                        font-size: 16px;
-                        color: rgba(255, 255, 255, 0.9);
-                        font-weight: 500;
-                    }
-                }
+        button {
+            i {
+                font-size: 28px;
             }
         }
     }
 
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
+    .episodeItem {
+        display: flex;
+        gap: 16px;
+        padding: 16px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        background: rgba(255, 255, 255, 0.05);
+        margin-bottom: 8px;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(4px);
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        &.active {
+            background: rgba($main-color, 0.15);
+            border-left: 3px solid $main-color;
+        }
+    }
+
+    .episodeNumber {
+        span {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+    }
+
+    .episodeInfo {
+        flex: 1;
+        overflow: hidden;
+
+        h4 {
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            margin: 0 0 4px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+    }
+
+    .error {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.95);
+        padding: 32px;
+        border-radius: 12px;
+        text-align: center;
+        color: white;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba($main-color, 0.3);
+        min-width: 300px;
+
+        h2 {
+            margin-bottom: 16px;
+            color: $main-color;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        p {
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        button {
+            margin-top: 24px;
+            padding: 12px 24px;
+            background-color: $main-color;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            width: auto;
+            height: auto;
+
+            &:hover {
+                background-color: darken($main-color, 5%);
+                transform: translateY(-1px);
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
         }
     }
 }

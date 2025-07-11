@@ -3,6 +3,7 @@ import moviesData from '../data/media.json';
 
 const convertMovie = (movie: any): Movie => {
   return {
+    type: 'movie',
     id: movie.id,
     title: movie.title,
     synopsis: movie.synopsis,

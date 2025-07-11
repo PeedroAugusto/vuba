@@ -1,0 +1,106 @@
+@use '../../styles/global.scss' as *;
+
+.error {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0, 5, 15);
+  padding: 20px;
+
+  .content {
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    i {
+      font-size: 64px;
+      color: $error-color;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: $text-color;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: $description-color;
+      margin-bottom: 32px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        i {
+          font-size: 20px;
+          margin: 0;
+          color: inherit;
+        }
+
+        &:hover {
+          transform: translateY(-2px);
+        }
+      }
+
+      .retryButton {
+        background: $main-color;
+        color: white;
+        border: none;
+
+        &:hover {
+          background: lighten($main-color, 5%);
+        }
+      }
+
+      .homeButton {
+        background: transparent;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .error {
+    .content {
+      padding: 30px 20px;
+
+      .buttons {
+        flex-direction: column;
+        
+        button {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+  }
+} 

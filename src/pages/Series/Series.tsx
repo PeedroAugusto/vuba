@@ -1,33 +1,34 @@
-import React, { useMemo } from 'react';
+import React, { useCallback } from 'react';
 import styles from './Series.module.scss';
 import { Navbar } from '../../components/Navbar/Navbar';
 import { Carousel } from "../../components/List/Carousel/Carousel";
 import { useMedia } from '../../hooks/useMedia';
+import { useNavigate } from 'react-router-dom';
+import { useGenreGroups } from '../../hooks/useGenreGroups';
+import { Featured } from '../../components/Featured/Featured';
+import { Loading } from '../../components/Loading/Loading';
 
 const Series: React.FC = () => {
-  const { series, featuredSerie, loading } = useMedia();
+  const { series, featuredSerie, loading, movies } = useMedia();
+  const navigate = useNavigate();
 
   // Memoize os grupos de gênero
-  const genreGroups = useMemo(() => {
-    // Coleta todos os gêneros únicos
-    const allGenres = new Set<string>();
-    series.forEach(serie => {
-      serie.genres.forEach(genre => allGenres.add(genre));
-    });
+  const genreGroups = useGenreGroups(movies, series);
 
-    // Cria grupos para cada gênero
-    return Array.from(allGenres).map(genre => ({
-      title: genre,
-      series: series.filter(serie => serie.genres.includes(genre))
-    }));
-  }, [series]);
+  const handlePlay = useCallback(() => {
+    if (featuredSerie) {
+      navigate(`/player/${featuredSerie.type}/${featuredSerie.id}`);
+    }
+  }, [featuredSerie, navigate]);
+
+  const handleMoreInfo = useCallback(() => {
+    if (featuredSerie) {
+      navigate(`/media/${featuredSerie.type}/${featuredSerie.id}`);
+    }
+  }, [featuredSerie, navigate]);
 
   if (loading || !featuredSerie) {
-    return (
-      <div className={styles.loading}>
-        <div className={styles.spinner}></div>
-      </div>
-    );
+    return <Loading />;
   }
 
   // Separa as séries mais bem avaliadas
@@ -37,32 +38,11 @@ const Series: React.FC = () => {
     <div className={styles.series}>
       <Navbar />
       
-      <div className={styles.featured} style={{ backgroundImage: `url(${featuredSerie.background})` }}>
-        <div className={styles.vignette}></div>
-        <div className={styles.content}>
-          <h1>{featuredSerie.title}</h1>
-          <div className={styles.meta}>
-            <span className={styles.rating}>
-              <i className='bx bxs-star'></i>
-              {featuredSerie.rating}
-            </span>
-            <span>{featuredSerie.releaseYear}</span>
-            <span>{featuredSerie.numberOfSeasons} temporadas</span>
-            <span className={styles.ageRating}>{featuredSerie.ageGroup}</span>
-          </div>
-          <p className={styles.synopsis}>{featuredSerie.synopsis}</p>
-          <div className={styles.buttons}>
-            <button className={styles.playButton}>
-              <i className='bx bx-play'></i>
-              Assistir
-            </button>
-            <button className={styles.moreButton}>
-              <i className='bx bx-info-circle'></i>
-              Mais Informações
-            </button>
-          </div>
-        </div>
-      </div>
+      <Featured
+        media={featuredSerie}
+        onPlay={handlePlay}
+        onMoreInfo={handleMoreInfo}
+      />
 
       <div className={styles.carousels}>
         <Carousel title="Séries em Alta" items={topSeries} type="serie" />

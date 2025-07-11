@@ -1,4 +1,5 @@
 @use '../../styles/global.scss' as *;
+@use 'sass:color';
 
 .movies {
     min-height: 100vh;
@@ -173,11 +174,11 @@
             }
 
             .playButton {
-                background: linear-gradient(135deg, $main-color, darken($main-color, 15%));
+                background: linear-gradient(135deg, $main-color, color.adjust($main-color, $lightness: -15%));
                 color: white;
 
                 &:hover {
-                    background: linear-gradient(135deg, lighten($main-color, 5%), darken($main-color, 10%));
+                    background: linear-gradient(135deg, color.adjust($main-color, $lightness: 5%), color.adjust($main-color, $lightness: -10%));
                 }
             }
 

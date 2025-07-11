@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styles from './Player.module.scss';
 import { Movie } from '../../types/Movie';
 import { Serie } from '../../types/Serie';
@@ -6,6 +6,10 @@ import { Episode } from '../../types/Episode';
 import { NextSuggestion } from './NextSuggestion';
 import { NextEpisodePreview } from './NextEpisodePreview';
 import { LogoIntro } from './LogoIntro';
+import { useVideoPlayer } from '../../hooks/ui/useVideoPlayer';
+import { usePlayerUI } from '../../hooks/ui/usePlayerUI';
+import { useEpisodes } from '../../hooks/api/useEpisodes';
+import 'boxicons/css/boxicons.min.css';
 
 interface PlayerProps {
     media: Movie | Serie;
@@ -18,7 +22,7 @@ interface PlayerProps {
 
 export const Player: React.FC<PlayerProps> = ({ 
     media, 
-    currentEpisode, 
+    currentEpisode: initialEpisode, 
     onEpisodeChange, 
     onClose,
     nextSuggestion,
@@ -26,490 +30,244 @@ export const Player: React.FC<PlayerProps> = ({
 }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const progressBarRef = useRef<HTMLDivElement>(null);
-    const [showControls, setShowControls] = useState(true);
-    const [showEpisodeList, setShowEpisodeList] = useState(false);
-    const [showCenterButton, setShowCenterButton] = useState(true);
-    const [showMediaInfo, setShowMediaInfo] = useState(false);
-    const [showNextSuggestion, setShowNextSuggestion] = useState(false);
-    const [showIntro, setShowIntro] = useState(true);
-    const controlsTimeoutRef = useRef<number>();
-    const mediaInfoTimeoutRef = useRef<number>();
-    const [showNextEpisodePreview, setShowNextEpisodePreview] = useState(false);
-    const [nextEpisode, setNextEpisode] = useState<Episode | null>(null);
 
-    const [controls, setControls] = useState({
-        playing: false,
-        currentTime: 0,
-        duration: 0,
-        volume: 1,
-        muted: false,
-        fullscreen: false,
-        buffered: 0,
+    // Hook de controle do vídeo
+    const {
+        isPlaying,
+        currentTime,
+        duration,
+        volume,
+        isMuted,
+        isFullscreen,
+        buffered,
+        error,
+        togglePlay,
+        seek,
+        setVolume,
+        toggleMute,
+        toggleFullscreen,
+        formatTime,
+        seekRelative
+    } = useVideoPlayer(videoRef);
+
+    // Hook de controle da UI
+    const {
+        showControls,
+        showEpisodeList,
+        showNextSuggestion: showNextSuggestionUI,
+        showIntro,
+        showNextEpisodePreview,
+        handleMouseMove,
+        handleIntroComplete,
+        toggleEpisodeList,
+        setUIState
+    } = usePlayerUI({ isPlaying });
+
+    // Hook de controle dos episódios
+    const {
+        nextEpisode,
+        currentEpisode,
+        episodes,
+        handleEpisodeSelect,
+        handleNextEpisode,
+    } = useEpisodes({
+        serie: 'episodes' in media ? media : undefined,
+        currentEpisode: initialEpisode,
+        onEpisodeChange
     });
 
-    // Função para encontrar o próximo episódio
-    const findNextEpisode = () => {
-        if (!('episodes' in media) || !currentEpisode) return null;
-        
-        const currentIndex = media.episodes.findIndex(
-            ep => ep.seasonNumber === currentEpisode.seasonNumber && 
-                  ep.episodeNumber === currentEpisode.episodeNumber
-        );
-        
-        if (currentIndex === -1 || currentIndex === media.episodes.length - 1) return null;
-        return media.episodes[currentIndex + 1];
-    };
-
-    // Efeito para atualizar o próximo episódio quando o episódio atual mudar
+    // Monitora o progresso do vídeo para exibir preview do próximo episódio
     useEffect(() => {
-        if (currentEpisode) {
-            const next = findNextEpisode();
-            setNextEpisode(next);
+        const timeRemaining = duration - currentTime;
+        
+        if (timeRemaining <= 15 && timeRemaining > 0) {
+            if (nextEpisode && !showNextEpisodePreview) {
+                setUIState({ showNextEpisodePreview: true });
+            }
+        } else if (timeRemaining <= 0) {
+            if (nextSuggestion) {
+                setUIState({ 
+                    showNextEpisodePreview: false,
+                    showNextSuggestion: true 
+                });
+            }
+        } else {
+            setUIState({
+                showNextEpisodePreview: false,
+                showNextSuggestion: false
+            });
         }
-    }, [currentEpisode, media]);
+    }, [currentTime, duration, nextEpisode, nextSuggestion, setUIState, showNextEpisodePreview]);
 
-    // Efeito para iniciar a reprodução automaticamente
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video || showIntro) return;
-
-        // Inicia a reprodução e atualiza o estado
-        video.play().then(() => {
-            setControls(prev => ({ ...prev, playing: true }));
-            setShowCenterButton(false);
-            setShowMediaInfo(false);
-        }).catch(error => {
-            console.error("Erro ao iniciar reprodução automática:", error);
-        });
-    }, [showIntro]);
-
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        const handleTimeUpdate = () => {
-            setControls(prev => ({
-                ...prev,
-                currentTime: video.currentTime,
-                duration: video.duration
-            }));
-
-            // Verificar se está próximo do fim do episódio (faltando 15 segundos)
-            const timeRemaining = video.duration - video.currentTime;
-            if (timeRemaining <= 15 && timeRemaining > 0) {
-                if (nextEpisode && !showNextEpisodePreview) {
-                    setShowNextEpisodePreview(true);
-                }
-            } else if (timeRemaining <= 0) {
-                // Se o tempo acabou, reproduz o próximo episódio
-                if (nextEpisode) {
-                    onEpisodeChange?.(nextEpisode);
-                    setShowNextEpisodePreview(false);
-                } else if (nextSuggestion) {
-                    setShowNextSuggestion(true);
-                }
-            } else {
-                setShowNextEpisodePreview(false);
-                setShowNextSuggestion(false);
-            }
-        };
-
-        const handleProgress = () => {
-            if (video.buffered.length > 0) {
-                setControls(prev => ({
-                    ...prev,
-                    buffered: video.buffered.end(video.buffered.length - 1)
-                }));
-            }
-        };
-
-        const handlePause = () => {
-            setControls(prev => ({ ...prev, playing: false }));
-            setShowCenterButton(true);
-            
-            // Mostrar informações da mídia após 3 segundos de pausa
-            if (mediaInfoTimeoutRef.current) {
-                clearTimeout(mediaInfoTimeoutRef.current);
-            }
-            mediaInfoTimeoutRef.current = window.setTimeout(() => {
-                setShowMediaInfo(true);
-            }, 6000);
-        };
-
-        const handlePlay = () => {
-            setControls(prev => ({ ...prev, playing: true }));
-            setShowCenterButton(false);
-            
-            // Esconder informações da mídia quando reproduzir
-            setShowMediaInfo(false);
-            if (mediaInfoTimeoutRef.current) {
-                clearTimeout(mediaInfoTimeoutRef.current);
-            }
-        };
-
-        const handleCanPlay = () => {
-            // Esconder botão central quando o vídeo puder ser reproduzido
-            if (!video.paused) {
-                setShowCenterButton(false);
-            }
-        };
-
-        video.addEventListener('timeupdate', handleTimeUpdate);
-        video.addEventListener('progress', handleProgress);
-        video.addEventListener('pause', handlePause);
-        video.addEventListener('play', handlePlay);
-        video.addEventListener('canplay', handleCanPlay);
-        
-        return () => {
-            video.removeEventListener('timeupdate', handleTimeUpdate);
-            video.removeEventListener('progress', handleProgress);
-            video.removeEventListener('pause', handlePause);
-            video.removeEventListener('play', handlePlay);
-            video.removeEventListener('canplay', handleCanPlay);
-            
-            if (mediaInfoTimeoutRef.current) {
-                clearTimeout(mediaInfoTimeoutRef.current);
-            }
-        };
-    }, [nextSuggestion, nextEpisode, onEpisodeChange]);
-
-    const handleProgressBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Handler para cliques na barra de progresso
+    const handleProgressBarClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         const progressBar = progressBarRef.current;
-        if (!progressBar || !videoRef.current) return;
+        if (!progressBar) return;
 
         const rect = progressBar.getBoundingClientRect();
         const clickPosition = (e.clientX - rect.left) / rect.width;
-        const newTime = clickPosition * controls.duration;
+        const newTime = clickPosition * duration;
         
-        videoRef.current.currentTime = newTime;
-        setControls(prev => ({ ...prev, currentTime: newTime }));
-    };
+        seek(newTime);
+    }, [duration, seek]);
 
-    const togglePlay = () => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        if (video.paused) {
-            video.play();
-            setControls(prev => ({ ...prev, playing: true }));
-            setShowCenterButton(false);
-            
-            // Esconder informações da mídia quando reproduzir
-            setShowMediaInfo(false);
-            if (mediaInfoTimeoutRef.current) {
-                clearTimeout(mediaInfoTimeoutRef.current);
-            }
-        } else {
-            video.pause();
-            setControls(prev => ({ ...prev, playing: false }));
-            setShowCenterButton(true);
-        }
-    };
-
-    const toggleMute = () => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        video.muted = !video.muted;
-        setControls(prev => ({ ...prev, muted: video.muted }));
-    };
-
-    const adjustVolume = (value: number) => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        video.volume = value;
-        video.muted = value === 0;
-        setControls(prev => ({ ...prev, volume: value, muted: value === 0 }));
-    };
-
-    const seekTo = (time: number) => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        video.currentTime = Math.max(0, Math.min(time, video.duration));
-    };
-
-    const toggleFullscreen = () => {
-        const container = document.querySelector(`.${styles.playerContainer}`);
-        if (!container) return;
-
-        if (!document.fullscreenElement) {
-            container.requestFullscreen();
-            setControls(prev => ({ ...prev, fullscreen: true }));
-        } else {
-            document.exitFullscreen();
-            setControls(prev => ({ ...prev, fullscreen: false }));
-        }
-    };
-
-    const formatTime = (time: number) => {
-        const hours = Math.floor(time / 3600);
-        const minutes = Math.floor((time % 3600) / 60);
-        const seconds = Math.floor(time % 60);
-        
-        if (hours > 0) {
-            return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    };
-
-    const handleMouseMove = () => {
-        setShowControls(true);
-        if (controlsTimeoutRef.current) {
-            clearTimeout(controlsTimeoutRef.current);
-        }
-        controlsTimeoutRef.current = window.setTimeout(() => {
-            if (controls.playing) {
-                setShowControls(false);
-            }
-        }, 3000);
-    };
+    if (error) {
+        return (
+            <div className={styles.error}>
+                <h2>Erro ao reproduzir vídeo</h2>
+                <p>{error.message}</p>
+                <button onClick={onClose}>Fechar</button>
+            </div>
+        );
+    }
 
     return (
         <div 
-            className={styles.playerContainer}
+            className={styles.playerContainer} 
             onMouseMove={handleMouseMove}
-            onMouseLeave={() => setShowControls(false)}
+            data-showing-controls={showControls}
+            data-testid="player-container"
         >
             {showIntro && (
-                <LogoIntro onComplete={() => setShowIntro(false)} />
+                <LogoIntro onComplete={handleIntroComplete} />
             )}
             
             <video
                 ref={videoRef}
-                className={styles.video}
-                onClick={togglePlay}
-                onDoubleClick={toggleFullscreen}
-            >
-                <source src={currentEpisode?.videoUrl || (media as Movie).videoUrl} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-            </video>
-
-            {/* Área de clique para pause/play */}
-            <div 
-                className={`${styles.clickArea} ${showControls ? styles.controlsVisible : ''}`}
-                onClick={togglePlay}
-                onMouseDown={(e) => e.stopPropagation()}
+                className={styles.videoPlayer}
+                src={currentEpisode?.videoUrl || (media as Movie).videoUrl}
+                data-testid="video-player"
+                autoPlay={true}
             />
 
-            {/* Botão central de play/pause */}
-            <div className={`${styles.centerPlayButton} ${showCenterButton ? styles.visible : ''}`}>
-                <button onClick={togglePlay}>
-                    <i className={`bx ${controls.playing ? 'bx-pause' : 'bx-play'}`} />
-                </button>
-            </div>
+            <button className={styles.backButton} onClick={onClose}>
+                <i className='bx bx-arrow-back'></i>
+            </button>
 
-            {/* Informações da mídia quando pausado */}
-            <div className={`${styles.mediaInfoOverlay} ${showMediaInfo ? styles.visible : ''}`}>
-                <div className={styles.mediaInfoContent}>
-                    <div className={styles.mediaTitle}>
-                        {currentEpisode ? (
-                            <>
-                                <h2>{media.title}</h2>
-                                <h3>{currentEpisode.title}</h3>
-                                <span>Temporada {currentEpisode.seasonNumber} • Episódio {currentEpisode.episodeNumber}</span>
-                            </>
-                        ) : (
-                            <h2>{media.title}</h2>
-                        )}
-                    </div>
+            {/* Controles do player */}
+            <div className={`${styles.controls} ${showControls ? styles.visible : ''}`}>
+                <div className={styles.progressContainer}>
+                    <span className={styles.timeDisplay} data-testid="time-display">
+                        {formatTime(currentTime)}
+                    </span>
                     
-                    <div className={styles.mediaDescription}>
-                        <p>{currentEpisode?.synopsis || media.synopsis}</p>
-                    </div>
-                    
-                    <div className={styles.mediaMetadata}>
-                        <div className={styles.metadataItem}>
-                            <span className={styles.metadataLabel}>Duração:</span>
-                            <span>{formatTime(controls.duration)}</span>
-                        </div>
-                        
-                        {(('genre' in media && media.genre) || media.genres?.[0]) && (
-                            <div className={styles.metadataItem}>
-                                <span className={styles.metadataLabel}>Gênero:</span>
-                                <span>{'genre' in media ? media.genre : media.genres[0]}</span>
-                            </div>
-                        )}
-                        
-                        {media.releaseYear && (
-                            <div className={styles.metadataItem}>
-                                <span className={styles.metadataLabel}>Ano:</span>
-                                <span>{media.releaseYear}</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
-
-            <div className={`${styles.overlay} ${showControls ? styles.visible : ''}`}
-                onClick={(e) => e.stopPropagation()}
-            >
-                <div className={styles.topControls}>
-                    <button onClick={onClose}>
-                        <i className='bx bx-arrow-back'></i>
-                    </button>
-                </div>
-
-                {showEpisodeList && 'episodes' in media && (
-                    <div className={`${styles.episodeList} ${showEpisodeList ? styles.visible : ''}`}>
-                        <div className={styles.episodeListHeader}>
-                            <h3>Episódios</h3>
-                            <button onClick={() => setShowEpisodeList(false)}>
-                                <i className='bx bx-x' />
-                            </button>
-                        </div>
-                        {media.episodes.map((episode) => (
-                            <div 
-                                key={`${episode.seasonNumber}-${episode.episodeNumber}`}
-                                className={`${styles.episodeItem} ${currentEpisode?.episodeNumber === episode.episodeNumber && currentEpisode?.seasonNumber === episode.seasonNumber ? styles.active : ''}`}
-                                onClick={() => {
-                                    onEpisodeChange?.(episode);
-                                    setShowEpisodeList(false);
-                                    if (videoRef.current) {
-                                        videoRef.current.currentTime = 0;
-                                        videoRef.current.play();
-                                    }
-                                }}
-                            >
-                                <span className={styles.episodeNumber}>
-                                    {episode.episodeNumber}
-                                </span>
-                                <div className={styles.episodeInfo}>
-                                    <div className={styles.episodeTitle}>
-                                        {episode.title}
-                                    </div>
-                                    <div className={styles.episodeDuration}>
-                                        {Math.floor(episode.duration / 60)}min
-                                    </div>
-                                </div>
-                                {currentEpisode?.episodeNumber === episode.episodeNumber && 
-                                 currentEpisode?.seasonNumber === episode.seasonNumber && (
-                                    <div className={styles.playingIndicator}>
-                                        <i className='bx bx-play' />
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                <div className={styles.progressBarContainer}
-                    onClick={(e) => e.stopPropagation()}
-                >
+                    {/* Barra de progresso */}
                     <div 
                         ref={progressBarRef}
                         className={styles.progressBar}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleProgressBarClick(e);
-                        }}
+                        onClick={handleProgressBarClick}
+                        data-testid="progress-bar"
                     >
                         <div 
-                            className={styles.progressFilled}
-                            style={{ 
-                                width: `${(controls.currentTime / controls.duration * 100) || 0}%`,
-                                transform: `translateX(0)` 
-                            }}
+                            className={styles.buffered}
+                            style={{ width: `${(buffered / duration) * 100}%` }}
+                        />
+                        <div 
+                            className={styles.progress}
+                            style={{ width: `${(currentTime / duration) * 100}%` }}
                         />
                     </div>
-                    <span className={styles.time}>
-                        {formatTime(controls.currentTime)} / {formatTime(controls.duration)}
+
+                    <span className={styles.timeDisplay} data-testid="duration-display">
+                        {formatTime(duration)}
                     </span>
                 </div>
 
-                <div className={styles.bottomControls}>
+                <div className={styles.controlsRow}>
+                    {/* Botões de controle */}
                     <div className={styles.leftControls}>
-                        <button onClick={togglePlay}>
-                            <i className={`bx ${controls.playing ? 'bx-pause' : 'bx-play'}`} />
+                        <button onClick={togglePlay} data-testid="play-button">
+                            <i className={`bx ${isPlaying ? 'bx-pause' : 'bx-play'}`}></i>
                         </button>
-
-                        <div className={styles.skipControls}>
-                            <button onClick={() => seekTo(controls.currentTime - 10)} className={styles.skipButton}>
-                                <i className='bx bx-rewind'></i>
-                                <span>10</span>
-                            </button>
-                            <button onClick={() => seekTo(controls.currentTime + 10)} className={styles.skipButton}>
-                                <span>10</span>
-                                <i className='bx bx-fast-forward'></i>
-                            </button>
-                        </div>
-
+                        <button onClick={() => seekRelative(-10)} data-testid="rewind-button">
+                            <i className='bx bx-rewind'></i>
+                        </button>
+                        <button onClick={() => seekRelative(10)} data-testid="forward-button">
+                            <i className='bx bx-fast-forward'></i>
+                        </button>
+                        <button onClick={toggleMute} data-testid="mute-button">
+                            <i className={`bx ${isMuted ? 'bx-volume-mute' : 'bx-volume-full'}`}></i>
+                        </button>
                         <div className={styles.volumeControl}>
-                            <button onClick={toggleMute}>
-                                <i className={`bx ${
-                                    controls.muted ? 'bx-volume-mute' : 
-                                    controls.volume > 0.7 ? 'bx-volume-full' :
-                                    controls.volume > 0.3 ? 'bx-volume-low' :
-                                    controls.volume > 0 ? 'bx-volume' : 'bx-volume-mute'
-                                }`} />
-                            </button>
-                            <div className={styles.volumeSlider}>
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="1"
-                                    step="0.1"
-                                    value={controls.volume}
-                                    onChange={(e) => adjustVolume(parseFloat(e.target.value))}
-                                />
-                            </div>
+                            <input
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={volume}
+                                onChange={(e) => setVolume(Number(e.target.value))}
+                                data-testid="volume-slider"
+                            />
                         </div>
                     </div>
 
                     <div className={styles.centerControls}>
-                        <div className={styles.mediaInfo}>
-                            {currentEpisode ? (
-                                <>
-                                    {media.title}
-                                    <span>•</span>
-                                    {currentEpisode.title}
-                                    <span>•</span>
-                                    <span>T{currentEpisode.seasonNumber} E{currentEpisode.episodeNumber}</span>
-                                </>
-                            ) : (
-                                media.title
-                            )}
+                        <div className={styles.mediaTitle}>
+                            <span className={styles.seriesInfo}>
+                                {initialEpisode && `T${initialEpisode.seasonNumber} E${initialEpisode.episodeNumber} •`} {media.title}
+                            </span>
+                            <h2>{initialEpisode?.title || media.title}</h2>
                         </div>
                     </div>
 
                     <div className={styles.rightControls}>
-                        {'episodes' in media && (
-                            <button onClick={() => setShowEpisodeList(!showEpisodeList)}>
-                                <i className='bx bx-list-ul' />
+                        {episodes.length > 0 && (
+                            <button onClick={toggleEpisodeList} data-testid="episodes-button">
+                                <i className='bx bx-list-ul'></i>
                             </button>
                         )}
-
-                        <button onClick={toggleFullscreen}>
-                            <i className={`bx ${controls.fullscreen ? 'bx-exit-fullscreen' : 'bx-fullscreen'}`} />
+                        <button onClick={toggleFullscreen} data-testid="fullscreen-button">
+                            <i className={`bx ${isFullscreen ? 'bx-exit-fullscreen' : 'bx-fullscreen'}`}></i>
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* Sugestão do próximo filme/série */}
-            {showNextSuggestion && nextSuggestion && (
-                <NextSuggestion
-                    currentMedia={media}
-                    suggestion={nextSuggestion}
-                    onPlaySuggestion={() => {
-                        setShowNextSuggestion(false);
-                        onPlayNextSuggestion?.();
-                    }}
-                    onClose={() => setShowNextSuggestion(false)}
+            {/* Lista de episódios */}
+            {showEpisodeList && episodes.length > 0 && (
+                <div className={`${styles.episodeList} ${styles.visible}`} data-testid="episode-list">
+                    <div className={styles.episodeListHeader}>
+                        <h3>Episódios</h3>
+                        <button onClick={toggleEpisodeList}>
+                            <i className='bx bx-x'></i>
+                        </button>
+                    </div>
+                    {episodes.map((episode) => (
+                        <div 
+                            key={`${episode.seasonNumber}-${episode.episodeNumber}`}
+                            className={`${styles.episodeItem} ${currentEpisode?.id === episode.id ? styles.active : ''}`}
+                            onClick={() => handleEpisodeSelect(episode)}
+                            data-testid={`episode-item-${episode.id}`}
+                        >
+                            <div className={styles.episodeNumber}>
+                                <span>T{episode.seasonNumber} E{episode.episodeNumber}</span>
+                            </div>
+                            <div className={styles.episodeInfo}>
+                                <h4>{episode.title}</h4>
+                                <p>{episode.synopsis}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Preview do próximo episódio */}
+            {showNextEpisodePreview && nextEpisode && (
+                <NextEpisodePreview 
+                    episode={nextEpisode}
+                    onPlay={handleNextEpisode}
+                    currentTime={currentTime}
+                    duration={duration}
                 />
             )}
 
-            {/* Prévia do próximo episódio */}
-            {showNextEpisodePreview && nextEpisode && 'episodes' in media && (
-                <NextEpisodePreview
-                    serie={media}
-                    nextEpisode={nextEpisode}
-                    onPlayNextEpisode={() => {
-                        setShowNextEpisodePreview(false);
-                        onEpisodeChange?.(nextEpisode);
-                    }}
-                    timeRemaining={videoRef.current ? videoRef.current.duration - videoRef.current.currentTime : 0}
+            {/* Sugestão do próximo conteúdo */}
+            {showNextSuggestionUI && nextSuggestion && onPlayNextSuggestion && (
+                <NextSuggestion
+                    media={nextSuggestion}
+                    onPlay={onPlayNextSuggestion}
+                    currentMedia={media}
+                    currentEpisode={currentEpisode || undefined}
                 />
             )}
         </div>

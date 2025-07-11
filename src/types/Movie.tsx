@@ -12,5 +12,5 @@ export interface Movie {
     releaseYear: number;
     ageGroup: string;
     featured?: boolean;
-    
+    type: 'movie';
 }

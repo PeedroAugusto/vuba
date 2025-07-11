@@ -26,4 +26,5 @@ export interface Serie {
     numberOfSeasons: number;
     status: 'Em andamento' | 'Finalizada' | 'Cancelada';
     nextEpisodeDate?: string;
+    type: 'serie';
 }

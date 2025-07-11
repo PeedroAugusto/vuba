@@ -11,6 +11,7 @@ const validateSerie = (serie: any): Serie => {
   }
 
   return {
+    type: 'serie',
     id: serie.id,
     title: serie.title,
     synopsis: serie.synopsis,

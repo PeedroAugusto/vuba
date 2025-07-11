@@ -1,0 +1,223 @@
+@use '../../styles/global.scss' as *;
+@use 'sass:color';
+
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.loading {
+  min-height: 100vh;
+  background: rgb(0, 5, 15);
+  overflow: hidden;
+
+  .heroSkeleton {
+    height: 70vh;
+    background: linear-gradient(110deg, #1a1a1a 8%, #262626 18%, #1a1a1a 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    padding: 80px max(54px, 4%);
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, 
+        rgb(0, 5, 15) 0%, 
+        rgba(0, 5, 15, 0.8) 40%, 
+        transparent 65%
+      );
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+
+      .titleSkeleton {
+        height: 60px;
+        width: 80%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        margin-bottom: 24px;
+      }
+
+      .metaSkeleton {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 24px;
+
+        .metaItem {
+          height: 32px;
+          width: 100px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 16px;
+        }
+      }
+
+      .synopsisSkeleton {
+        margin-bottom: 32px;
+
+        div {
+          height: 20px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+          margin-bottom: 12px;
+
+          &:nth-child(1) { width: 100%; }
+          &:nth-child(2) { width: 90%; }
+          &:nth-child(3) { width: 70%; }
+        }
+      }
+
+      .buttonsSkeleton {
+        display: flex;
+        gap: 16px;
+
+        .button {
+          height: 50px;
+          width: 180px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 25px;
+        }
+      }
+    }
+  }
+
+  .episodesSkeleton {
+    padding: 40px max(54px, 4%);
+    background: rgb(0, 5, 15);
+
+    .episodeHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+
+      .titleSkeleton {
+        height: 32px;
+        width: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
+
+      .dropdownSkeleton {
+        height: 40px;
+        width: 180px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+      }
+    }
+
+    .episodeList {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      .episodeCard {
+        display: flex;
+        gap: 24px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        overflow: hidden;
+
+        .thumbSkeleton {
+          width: 300px;
+          height: 169px;
+          background: linear-gradient(110deg, #1a1a1a 8%, #262626 18%, #1a1a1a 33%);
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite linear;
+          flex-shrink: 0;
+        }
+
+        .infoSkeleton {
+          padding: 20px 24px 20px 0;
+          flex-grow: 1;
+
+          .titleSkeleton {
+            height: 28px;
+            width: 60%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 16px;
+          }
+
+          .metaSkeleton {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 16px;
+
+            div {
+              height: 20px;
+              width: 100px;
+              background: rgba(255, 255, 255, 0.1);
+              border-radius: 4px;
+            }
+          }
+
+          .synopsisSkeleton {
+            div {
+              height: 16px;
+              background: rgba(255, 255, 255, 0.1);
+              border-radius: 4px;
+              margin-bottom: 8px;
+
+              &:nth-child(1) { width: 100%; }
+              &:nth-child(2) { width: 90%; }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .loading {
+    .heroSkeleton {
+      height: auto;
+      min-height: 100vh;
+      padding: 60px 20px;
+
+      .content {
+        .buttonsSkeleton {
+          flex-direction: column;
+
+          .button {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .episodesSkeleton {
+      padding: 40px 20px;
+
+      .episodeHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .episodeList .episodeCard {
+        flex-direction: column;
+        gap: 0;
+
+        .thumbSkeleton {
+          width: 100%;
+          height: 200px;
+        }
+
+        .infoSkeleton {
+          padding: 20px;
+        }
+      }
+    }
+  }
+} 

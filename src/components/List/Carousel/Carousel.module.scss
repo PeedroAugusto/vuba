@@ -1,4 +1,4 @@
-@import '../../../styles/global.scss';
+@use '../../../styles/global.scss' as *;
 
 .carousel {
     position: relative;
@@ -96,21 +96,21 @@
     .carousel-wrapper {
         position: relative;
         padding: 0 4%;
+        overflow: visible;
 
         .carousel-track {
             display: grid;
             grid-auto-flow: column;
             grid-auto-columns: calc((100% - (5 * 16px)) / 6);
             gap: 16px;
-            overflow-y: hidden;
+            overflow-x: hidden;
+            overflow-y: visible;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
             -ms-overflow-style: none;
-            padding-left: calc(4% - 16px);
-            margin-left: -4%;
-            padding-right: 4%;
-            margin-right: -4%;
+            padding: 20px 4% 20px calc(4% - 16px);
+            margin: -20px -4% -20px -4%;
             scroll-padding-left: calc(4% - 16px);
 
             &::-webkit-scrollbar {
@@ -128,8 +128,8 @@
                 border: 1px solid rgba(255, 255, 255, 0.1);
 
                 &:hover {
-                    transform: scale(1.08) translateY(-10px);
-                    z-index: 2;
+                    transform: scale(1.08) translateY(1px);
+                    z-index: 1;
                     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 
                     .item-overlay {
@@ -237,18 +237,23 @@
             top: 50%;
             transform: translateY(-50%);
             width: 50px;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            height: calc(100% - 40px); // Ajustado para considerar o padding
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
             border: none;
             cursor: pointer;
-            z-index: 3;
+            z-index: 5; // Aumentado para garantir que fique acima dos itens
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
             color: $text-color;
             opacity: 0;
+
+            &:hover {
+                opacity: 1;
+                background: rgba(0, 0, 0, 0.7);
+            }
 
             &:first-child {
                 left: 0;
@@ -262,25 +267,14 @@
                 border-bottom-left-radius: 8px;
             }
 
-            &:hover:not(:disabled) {
-                background: rgba(0, 0, 0, 0.5);
-                opacity: 1;
-                width: 60px;
+            i {
+                font-size: 2rem;
             }
 
             &.disabled {
-                cursor: not-allowed;
                 opacity: 0;
+                cursor: default;
                 pointer-events: none;
-            }
-
-            i {
-                font-size: 2rem;
-                transition: transform 0.3s ease;
-            }
-
-            &:hover:not(:disabled) i {
-                transform: scale(1.2);
             }
         }
 
