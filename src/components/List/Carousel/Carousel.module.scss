@@ -103,7 +103,7 @@
             grid-auto-flow: column;
             grid-auto-columns: calc((100% - (5 * 16px)) / 6);
             gap: 16px;
-            overflow-x: hidden;
+            overflow-x: auto;
             overflow-y: visible;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
@@ -112,6 +112,50 @@
             padding: 20px 4% 20px calc(4% - 16px);
             margin: -20px -4% -20px -4%;
             scroll-padding-left: calc(4% - 16px);
+            touch-action: auto;
+            cursor: grab;
+            user-select: none;
+
+            &:active {
+                cursor: grabbing;
+            }
+
+            @media (max-width: 768px) {
+                scroll-snap-type: x mandatory;
+                
+                .item {
+                    scroll-snap-align: start;
+                }
+            }
+
+            @media (max-width: 1400px) {
+                grid-auto-columns: calc((100% - (4 * 16px)) / 5);
+                gap: 16px;
+            }
+
+            @media (max-width: 1200px) {
+                grid-auto-columns: calc((100% - (3 * 16px)) / 4);
+                gap: 16px;
+            }
+
+            @media (max-width: 900px) {
+                grid-auto-columns: calc((100% - (2 * 12px)) / 3);
+                gap: 12px;
+            }
+
+            @media (max-width: 600px) {
+                grid-auto-columns: calc((100% - (2 * 8px)) / 3);
+                gap: 8px;
+                padding: 16px 4% 16px calc(4% - 8px);
+                margin: -16px -4% -16px -4%;
+            }
+
+            @media (max-width: 480px) {
+                grid-auto-columns: calc((100% - (2 * 8px)) / 3);
+                gap: 8px;
+                padding: 12px 4% 12px calc(4% - 8px);
+                margin: -12px -4% -12px -4%;
+            }
 
             &::-webkit-scrollbar {
                 display: none;
@@ -126,11 +170,25 @@
                 aspect-ratio: 2/3;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
                 border: 1px solid rgba(255, 255, 255, 0.1);
+                touch-action: auto; // Permite zoom e scroll natural
+
+                @media (max-width: 900px) {
+                    border-radius: 12px;
+                }
+
+                @media (max-width: 600px) {
+                    border-radius: 8px;
+                    aspect-ratio: 3/4;
+                }
 
                 &:hover {
                     transform: scale(1.08) translateY(1px);
                     z-index: 1;
                     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+
+                    @media (max-width: 600px) {
+                        transform: scale(1.05) translateY(1px);
+                    }
 
                     .item-overlay {
                         opacity: 1;
@@ -182,6 +240,18 @@
                             overflow: hidden;
                             line-height: 1.4;
                             letter-spacing: 0.5px;
+
+                            @media (max-width: 900px) {
+                                font-size: 1rem;
+                                margin: 0 0 8px;
+                            }
+
+                            @media (max-width: 480px) {
+                                font-size: 0.9rem;
+                                margin: 0 0 6px;
+                                -webkit-line-clamp: 1;
+                                line-clamp: 1;
+                            }
                         }
 
                         .item-meta {
@@ -191,6 +261,18 @@
                             color: rgba(255, 255, 255, 0.9);
                             margin-bottom: 12px;
                             font-weight: 500;
+
+                            @media (max-width: 900px) {
+                                gap: 8px;
+                                font-size: 0.85rem;
+                                margin-bottom: 8px;
+                            }
+
+                            @media (max-width: 480px) {
+                                gap: 6px;
+                                font-size: 0.8rem;
+                                margin-bottom: 6px;
+                            }
 
                             span {
                                 display: flex;
@@ -222,12 +304,20 @@
                             line-clamp: 1;
                             -webkit-box-orient: vertical;
                             overflow: hidden;
+
+                            @media (max-width: 900px) {
+                                font-size: 0.85rem;
+                            }
+
+                            @media (max-width: 480px) {
+                                font-size: 0.8rem;
+                            }
                         }
                     }
-                }
 
-                &:hover .item-overlay .item-info {
-                    transform: translateY(0);
+                    &:hover .item-overlay .item-info {
+                        transform: translateY(0);
+                    }
                 }
             }
         }
@@ -276,26 +366,66 @@
                 cursor: default;
                 pointer-events: none;
             }
+
+            @media (max-width: 900px) {
+                width: 40px;
+                height: calc(100% - 32px);
+            }
+
+            @media (max-width: 600px) {
+                width: 35px;
+                height: calc(100% - 24px);
+            }
+
+            @media (max-width: 480px) {
+                display: none; // Esconde os botões em telas muito pequenas
+            }
         }
 
         &:hover .btn-nav:not(.disabled) {
             opacity: 0.8;
         }
     }
-}
 
-@media (max-width: 1400px) {
-    .carousel {
-        .carousel-track {
-            grid-auto-columns: calc((100% - (4 * 10px)) / 5);
+    .carousel-header {
+        @media (max-width: 900px) {
+            margin-bottom: 16px;
+
+            .genre-title {
+                font-size: 1.5rem;
+            }
         }
-    }
-}
 
-@media (max-width: 1200px) {
-    .carousel {
-        .carousel-track {
-            grid-auto-columns: calc((100% - (3 * 10px)) / 4);
+        @media (max-width: 600px) {
+            margin-bottom: 12px;
+
+            .genre-title {
+                font-size: 1.25rem;
+            }
+
+            .navigation {
+                gap: 16px;
+
+                .dots {
+                    .dot {
+                        width: 8px;
+                        height: 8px;
+                    }
+                }
+
+                .see-more {
+                    font-size: 0.9rem;
+                    padding: 6px 12px;
+                }
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navigation {
+                .dots {
+                    display: none; // Esconde os dots em telas muito pequenas
+                }
+            }
         }
     }
 }

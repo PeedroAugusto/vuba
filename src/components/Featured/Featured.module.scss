@@ -9,26 +9,34 @@
     background-position: center 20%;
     overflow: hidden;
 
+    @media (max-width: 768px) {
+        height: 80vh;
+        background-position: center 10%;
+    }
+
+    @media (max-width: 480px) {
+        height: 90vh;
+    }
+
     &::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(90deg, 
-            rgba(0, 5, 15, 0.95) 0%, 
-            rgba(0, 5, 15, 0.8) 0%, 
-            rgba(0, 5, 15, 0.4) 8%, 
-            transparent 100%
-        );
+        background: linear-gradient(90deg,
+                rgba(0, 5, 15, 0.95) 0%,
+                rgba(0, 5, 15, 0.8) 0%,
+                rgba(0, 5, 15, 0.4) 8%,
+                transparent 100%);
+
+        @media (max-width: 768px) {
+            background: linear-gradient(90deg, rgb(0 5 15 / 48%) 0%, rgb(0 5 15 / 0%) 50%, rgb(0 5 15 / 29%) 100%);
+        }
     }
 
     .vignette {
         position: absolute;
         inset: 0;
-        background: linear-gradient(0deg, 
-            rgb(0, 5, 15) 0%, 
-            rgba(0, 5, 15, 0.8) 40%, 
-            transparent 65%
-        );
+        background: linear-gradient(175deg, rgb(0 5 15 / 52%) 0%, rgb(0 5 15 / 48%) 50%, rgb(0 5 15 / 54%) 100%);
     }
 
     .content {
@@ -40,6 +48,15 @@
         justify-content: center;
         padding: 80px max(54px, 4%);
         color: white;
+
+        @media (max-width: 1024px) {
+            padding: 60px max(40px, 4%);
+        }
+
+        @media (max-width: 768px) {
+            padding: 40px 20px;
+            justify-content: flex-end;
+        }
 
         h1 {
             font-size: clamp(2.5rem, 5vw, 4rem);
@@ -53,6 +70,18 @@
             animation: slideFromLeft 0.8s ease-out;
             padding-left: 24px;
 
+            @media (max-width: 768px) {
+                font-size: clamp(1.8rem, 4vw, 2.5rem);
+                margin-bottom: 16px;
+                padding-left: 16px;
+                letter-spacing: 1px;
+            }
+
+            @media (max-width: 480px) {
+                font-size: clamp(1.5rem, 3.5vw, 1.8rem);
+                padding-left: 12px;
+            }
+
             &::before {
                 content: '';
                 position: absolute;
@@ -63,6 +92,10 @@
                 height: 70%;
                 background: $main-color;
                 border-radius: 3px;
+
+                @media (max-width: 768px) {
+                    width: 4px;
+                }
             }
         }
 
@@ -74,6 +107,18 @@
             font-size: 0.95rem;
             font-weight: 500;
             animation: slideFromLeft 0.8s ease-out 0.2s backwards;
+            flex-wrap: wrap;
+
+            @media (max-width: 768px) {
+                gap: 12px;
+                margin-bottom: 16px;
+                font-size: 0.9rem;
+            }
+
+            @media (max-width: 480px) {
+                gap: 8px;
+                font-size: 0.85rem;
+            }
 
             span {
                 display: flex;
@@ -85,9 +130,16 @@
                 backdrop-filter: blur(10px);
                 transition: all 0.3s ease;
 
-                &:hover {
-                    background: rgba(255, 255, 255, 0.2);
-                    transform: translateY(-2px);
+                @media (max-width: 768px) {
+                    padding: 4px 10px;
+                    gap: 6px;
+                }
+
+                @media (hover: hover) {
+                    &:hover {
+                        background: rgba(255, 255, 255, 0.2);
+                        transform: translateY(-2px);
+                    }
                 }
             }
 
@@ -97,11 +149,11 @@
 
                 i {
                     font-size: 1.2rem;
-                }
-            }
 
-            .ageRating {
-                border: 1px solid rgba(255, 255, 255, 0.2);
+                    @media (max-width: 768px) {
+                        font-size: 1.1rem;
+                    }
+                }
             }
         }
 
@@ -114,12 +166,46 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
             color: rgba(255, 255, 255, 0.9);
             animation: slideFromLeft 0.8s ease-out 0.4s backwards;
+
+            @media (max-width: 1200px) {
+                max-width: 60%;
+            }
+
+            @media (max-width: 768px) {
+                max-width: 100%;
+                margin-bottom: 24px;
+                font-size: 0.95rem;
+                line-height: 1.6;
+                -webkit-line-clamp: 3;
+                line-clamp: 3;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            @media (max-width: 480px) {
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+            }
         }
 
         .buttons {
             display: flex;
             gap: 20px;
             animation: slideFromLeft 0.8s ease-out 0.6s backwards;
+
+            @media (max-width: 768px) {
+                flex-direction: row;
+                gap: 12px;
+            }
+
+            @media (max-width: 480px) {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
 
             button {
                 height: 50px;
@@ -139,9 +225,25 @@
                 position: relative;
                 overflow: hidden;
 
+                @media (max-width: 768px) {
+                    height: 45px;
+                    min-width: 150px;
+                    font-size: 0.9rem;
+                    gap: 8px;
+                }
+
+                @media (max-width: 480px) {
+                    width: 100%;
+                    height: 45px;
+                }
+
                 i {
                     font-size: 1.4rem;
                     transition: transform 0.3s ease;
+
+                    @media (max-width: 768px) {
+                        font-size: 1.2rem;
+                    }
                 }
 
                 &::before {
@@ -185,7 +287,7 @@
                 border: 1px solid rgba(255, 255, 255, 0.2);
                 backdrop-filter: blur(10px);
                 padding: 0px 15px;
-                
+
                 &:hover {
                     background: rgba(255, 255, 255, 0.15);
                 }
@@ -199,43 +301,9 @@
         opacity: 0;
         transform: translateX(-100px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
     }
 }
-
-@media (max-width: 1024px) {
-    .featured .content {
-        .synopsis {
-            max-width: 60%;
-        }
-    }
-}
-
-@media (max-width: 768px) {
-    .featured {
-        height: 70vh;
-
-        .content {
-            padding: 60px 20px;
-
-            h1 {
-                font-size: clamp(2rem, 4vw, 3rem);
-            }
-
-            .synopsis {
-                max-width: 100%;
-            }
-
-            .buttons {
-                flex-direction: column;
-                width: 100%;
-
-                button {
-                    width: 100%;
-                }
-            }
-        }
-    }
-} 

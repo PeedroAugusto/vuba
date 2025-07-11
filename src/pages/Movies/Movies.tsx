@@ -16,7 +16,7 @@ const Movies: React.FC = () => {
 
   const handlePlay = useCallback(() => {
     if (featuredMovie) {
-      navigate(`/player/${featuredMovie.type}/${featuredMovie.id}`);
+      navigate(`/player/${featuredMovie.id}/${featuredMovie.type}`);
     }
   }, [featuredMovie, navigate]);
 

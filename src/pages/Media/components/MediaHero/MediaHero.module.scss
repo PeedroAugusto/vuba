@@ -39,6 +39,11 @@
     padding: 80px max(54px, 4%);
     color: white;
 
+    @media (max-width: 768px) {
+      padding: 100px 20px 60px;
+      justify-content: flex-start;
+    }
+
     .info {
       max-width: 800px;
 
@@ -55,6 +60,21 @@
         border-radius: 20px;
         transition: all 0.3s ease;
         margin-bottom: 24px;
+
+        @media (max-width: 768px) {
+          top: 70px;
+          left: 0;
+          margin: 8px;
+          background: rgba(0, 5, 15, 0.8);
+          backdrop-filter: blur(10px);
+          border-radius: 5%;
+          width: 50%;
+          height: 40px;
+          padding: 0;
+          justify-content: center;
+          font-size: 70%;
+          z-index: 10;
+        }
 
         &:hover {
           background: rgba(255, 255, 255, 0.1);
@@ -76,6 +96,12 @@
           text-shadow: 6px 2px 4px rgba(0, 0, 0, .8);
           position: relative;
 
+          @media (max-width: 768px) {
+            font-size: 10px;
+            margin-bottom: 16px;
+            padding-left: 12px;
+          }
+
           &::before {
             content: "";
             position: absolute;
@@ -85,6 +111,12 @@
             width: 6px;
             height: 70%;
             background: #001845;
+
+            @media (max-width: 768px) {
+              left: 0;
+              height: 100%;
+              width: 4px;
+            }
           }
         }
 
@@ -97,6 +129,12 @@
           font-weight: 500;
           flex-wrap: wrap;
 
+          @media (max-width: 768px) {
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+          }
+
           span {
             display: flex;
             align-items: center;
@@ -107,12 +145,16 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
 
+            @media (max-width: 768px) {
+              padding: 4px 10px;
+            }
+
             &:hover {
               background: rgba(255, 255, 255, 0.2);
               transform: translateY(-2px);
             }
 
-           
+
           }
 
           .rating {
@@ -153,6 +195,12 @@
           color: rgba(255, 255, 255, 0.9);
           text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
           max-width: 700px;
+
+          @media (max-width: 768px) {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+          }
         }
       }
 
@@ -257,10 +305,11 @@
 @media (max-width: 768px) {
   .hero {
     height: auto;
-    min-height: 100vh;
 
     .content {
       padding: 60px 20px;
+      min-height: 90vh;
+      justify-content: end;
 
       .info {
         .mediaInfo {
@@ -288,11 +337,14 @@
         }
 
         .buttons {
-          flex-direction: column;
           width: 100%;
+          gap: 0px;
 
           button {
-            width: 100%;
+            width: 150px;
+            font-size: 60%;
+            min-width: 100px;
+            height: 50px;
           }
         }
       }

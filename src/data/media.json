@@ -14,6 +14,19 @@
     },
    "movies": [
     {
+      "id": 1,
+      "title": "Guardiões da Galáxia Vol. 3",
+      "synopsis": "Peter Quill, que ainda está se recuperando da perda de Gamora, deve reunir sua equipe para defender o universo e proteger um dos seus. Se a missão não for totalmente bem-sucedida, isso pode levar ao fim dos Guardiões como os conhecemos.",
+      "thumbnail": "https://image.tmdb.org/t/p/original/4yycSPnchdNAZirGkmCYQwTd3cr.jpg",
+      "background": "https://image.tmdb.org/t/p/original/5YZbUmjbMa3ClvSW1Wj3D6XGolb.jpg",
+      "ageGroup": "12",
+      "rating": 4.8,
+      "duration": 150,
+      "releaseYear": 2023,
+      "genres": ["Ação", "Aventura", "Ficção Científica"],
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
       "id": 2,
       "title": "Oppenheimer",
       "synopsis": "Ambientado na Segunda Guerra Mundial, o longa acompanha a vida de J. Robert Oppenheimer (Cillian Murphy), físico teórico da Universidade da Califórnia e diretor do Laboratório de Los Alamos durante o Projeto Manhattan - que tinha a missão de projetar e construir as primeiras bombas atômicas.",

@@ -50,35 +50,39 @@ export const Carousel = ({ title, items, type }: CarouselProps) => {
         setTotalPages(Math.ceil(items.length / itemsPerPage));
     }, [items.length, itemsPerPage]);
 
-    const handleMouseDown = (e: React.MouseEvent) => {
-        if (!(e.target instanceof HTMLDivElement) || !e.target.classList.contains(styles['carousel-track'])) {
+    const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+        if (!trackRef.current) return;
+        
+        if ('touches' in e) {
+            // Para touch, não fazemos nada especial
             return;
         }
+
+        // Apenas para mouse
         setIsDragging(true);
-        setStartX(e.pageX - (trackRef.current?.offsetLeft || 0));
-        setScrollLeft(trackRef.current?.scrollLeft || 0);
+        const pageX = (e as React.MouseEvent).pageX;
+        setStartX(pageX - trackRef.current.offsetLeft);
+        setScrollLeft(trackRef.current.scrollLeft);
         setDragDistance(0);
     };
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!isDragging) return;
-        e.preventDefault();
-        const x = e.pageX - (trackRef.current?.offsetLeft || 0);
-        const walk = (x - startX) * 2;
+    const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
+        if (!isDragging || !trackRef.current || 'touches' in e) return;
+
+        // Apenas para mouse
+        const pageX = (e as React.MouseEvent).pageX;
+        const x = pageX - trackRef.current.offsetLeft;
+        const walk = (x - startX);
+        trackRef.current.scrollLeft = scrollLeft - walk;
         setDragDistance(Math.abs(walk));
-        if (trackRef.current) {
-            trackRef.current.scrollLeft = scrollLeft - walk;
-        }
     };
 
     const handleMouseUp = () => {
         setIsDragging(false);
-        // Limpar o timeout anterior se existir
         if (clickTimeoutRef.current) {
             window.clearTimeout(clickTimeoutRef.current);
         }
         
-        // Definir um novo timeout
         clickTimeoutRef.current = window.setTimeout(() => {
             setDragDistance(0);
         }, 100);
@@ -160,7 +164,7 @@ export const Carousel = ({ title, items, type }: CarouselProps) => {
                         <div 
                             key={index} 
                             className={styles.item}
-                            onClick={() => handleItemClick(media.id)}
+                            onClick={() => !isDragging && handleItemClick(media.id)}
                             role="button"
                             tabIndex={0}
                             onKeyPress={(e) => {

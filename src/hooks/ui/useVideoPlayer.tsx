@@ -20,7 +20,7 @@ interface VideoPlayerActions {
     seekRelative: (offset: number) => void;
     setVolume: (volume: number) => void;
     toggleMute: () => void;
-    toggleFullscreen: () => void;
+    toggleFullscreen: (containerRef: React.RefObject<HTMLDivElement>) => void;
     setPlaybackRate: (rate: number) => void;
     formatTime: (time: number) => string;
 }
@@ -112,33 +112,52 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>): Use
         }
     }, [videoRef, playerState.isMuted]);
 
-    const toggleFullscreen = useCallback(() => {
-        if (!videoRef.current) return;
+    const toggleFullscreen = useCallback((containerRef: React.RefObject<HTMLDivElement>) => {
+        if (!containerRef.current) return;
+
+        const container = containerRef.current;
 
         if (!document.fullscreenElement) {
-            videoRef.current.requestFullscreen()
+            container.requestFullscreen()
                 .then(() => {
                     setPlayerState(prev => ({ ...prev, isFullscreen: true }));
                 })
                 .catch(err => {
-                    setPlayerState(prev => ({ 
-                        ...prev, 
-                        error: new Error(`Erro ao entrar em tela cheia: ${err.message}`)
-                    }));
+                    // Tenta métodos específicos do navegador se o padrão falhar
+                    if ((container as any).webkitRequestFullscreen) {
+                        (container as any).webkitRequestFullscreen();
+                    } else if ((container as any).mozRequestFullScreen) {
+                        (container as any).mozRequestFullScreen();
+                    } else if ((container as any).msRequestFullscreen) {
+                        (container as any).msRequestFullscreen();
+                    } else {
+                        setPlayerState(prev => ({ 
+                            ...prev, 
+                            error: new Error(`Erro ao entrar em tela cheia: ${err.message}`)
+                        }));
+                    }
                 });
         } else {
-            document.exitFullscreen()
-                .then(() => {
-                    setPlayerState(prev => ({ ...prev, isFullscreen: false }));
-                })
-                .catch(err => {
-                    setPlayerState(prev => ({ 
-                        ...prev, 
-                        error: new Error(`Erro ao sair da tela cheia: ${err.message}`)
-                    }));
-                });
+            if (document.exitFullscreen) {
+                document.exitFullscreen()
+                    .then(() => {
+                        setPlayerState(prev => ({ ...prev, isFullscreen: false }));
+                    })
+                    .catch(err => {
+                        setPlayerState(prev => ({ 
+                            ...prev, 
+                            error: new Error(`Erro ao sair da tela cheia: ${err.message}`)
+                        }));
+                    });
+            } else if ((document as any).webkitExitFullscreen) {
+                (document as any).webkitExitFullscreen();
+            } else if ((document as any).mozCancelFullScreen) {
+                (document as any).mozCancelFullScreen();
+            } else if ((document as any).msExitFullscreen) {
+                (document as any).msExitFullscreen();
+            }
         }
-    }, [videoRef]);
+    }, []);
 
     const setPlaybackRate = useCallback((rate: number) => {
         if (!videoRef.current) return;

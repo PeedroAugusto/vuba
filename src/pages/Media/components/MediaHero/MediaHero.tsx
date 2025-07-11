@@ -35,7 +35,7 @@ export const MediaHero: React.FC<MediaHeroProps> = ({
                         aria-label="Voltar para Home"
                     >
                         <i className='bx bx-arrow-back' aria-hidden="true"></i>
-                        Voltar para Home
+                        <span>Voltar para navegação</span>
                     </button>
 
                     <div className={styles.mediaInfo}>

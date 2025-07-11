@@ -5,6 +5,10 @@
   padding: 40px max(54px, 4%);
   background: rgb(0, 5, 15);
 
+  @media (max-width: 768px) {
+    padding: 20px 16px;
+  }
+
   .episodesHeader {
     display: flex;
     align-items: center;
@@ -15,6 +19,10 @@
       font-size: 1.8rem;
       font-weight: 700;
       color: white;
+
+      @media (max-width: 768px) {
+        font-size: 1.4rem;
+      }
     }
   }
 
@@ -100,6 +108,11 @@
     cursor: pointer;
     transition: all 0.3s ease;
 
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 12px;
+    }
+
     &:hover {
       background: rgba(255, 255, 255, 0.08);
       transform: translateY(-2px);
@@ -121,6 +134,11 @@
       width: 300px;
       height: 169px;
       flex-shrink: 0;
+
+      @media (max-width: 768px) {
+        width: 100%;
+        height: 120px;
+      }
 
       img {
         width: 100%;
@@ -147,6 +165,11 @@
         border-radius: 20px;
         font-size: 0.9rem;
         z-index: 2;
+
+        @media (max-width: 768px) {
+          font-size: 0.8rem;
+          padding: 4px 8px;
+        }
       }
 
       .playButton {
@@ -172,6 +195,15 @@
           color: white;
         }
 
+        @media (max-width: 768px) {
+          width: 40px;
+          height: 40px;
+
+          i {
+            font-size: 1.5rem;
+          }
+        }
+
         &:hover {
           background: color.adjust($main-color, $lightness: 5%);
           transform: translate(-50%, -50%) scale(1.1);
@@ -183,6 +215,10 @@
       padding: 20px 24px 20px 0;
       flex-grow: 1;
 
+      @media (max-width: 768px) {
+        padding: 12px;
+      }
+
       .episodeHeader {
         margin-bottom: 12px;
 
@@ -191,6 +227,11 @@
           font-weight: 600;
           color: white;
           margin-bottom: 8px;
+
+          @media (max-width: 768px) {
+            font-size: 1rem;
+            margin-bottom: 4px;
+          }
         }
       }
 
@@ -199,12 +240,22 @@
         gap: 20px;
         margin-bottom: 16px;
 
+        @media (max-width: 768px) {
+          gap: 12px;
+          margin-bottom: 8px;
+        }
+
         span {
           display: flex;
           align-items: center;
           gap: 8px;
           color: rgba(255, 255, 255, 0.7);
           font-size: 0.9rem;
+
+          @media (max-width: 768px) {
+            font-size: 0.8rem;
+            gap: 4px;
+          }
 
           i {
             color: $text-color;
@@ -221,6 +272,13 @@
         line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
+
+        @media (max-width: 768px) {
+          font-size: 0.9rem;
+          line-height: 1.4;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+        }
       }
     }
   }

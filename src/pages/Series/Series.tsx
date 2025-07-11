@@ -17,7 +17,7 @@ const Series: React.FC = () => {
 
   const handlePlay = useCallback(() => {
     if (featuredSerie) {
-      navigate(`/player/${featuredSerie.type}/${featuredSerie.id}`);
+      navigate(`/player/${featuredSerie.id}/${featuredSerie.type}`);
     }
   }, [featuredSerie, navigate]);
 

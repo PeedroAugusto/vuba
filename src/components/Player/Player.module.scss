@@ -1,5 +1,30 @@
 @use '../../styles/global.scss' as *;
 
+// Adicionando os keyframes no início do arquivo
+@keyframes rotateForward {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(60deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes rotateBackward {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(-50deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
 .playerContainer {
     position: fixed;
     top: 0;
@@ -10,14 +35,6 @@
     z-index: 1000;
     display: flex;
     flex-direction: column;
-
-    &[data-showing-controls="true"] {
-        cursor: default;
-    }
-
-    &[data-showing-controls="false"] {
-        cursor: none;
-    }
 
     .videoPlayer {
         width: 100%;
@@ -31,35 +48,6 @@
         bottom: 0;
     }
 
-    .backButton {
-        position: absolute;
-        top: 24px;
-        left: 24px;
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-        z-index: 10;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(8px);
-
-        i {
-            font-size: 24px;
-        }
-
-        &:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-    }
-
     .controls {
         position: absolute;
         bottom: 0;
@@ -68,12 +56,68 @@
         background: linear-gradient(transparent, rgba(0, 0, 0, 0.4) 20%, rgba(0, 0, 0, 0.9));
         padding: 24px;
         opacity: 0;
-        transition: all 0.4s ease;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
         pointer-events: none;
+        transform: translateY(20px);
+        z-index: 2;
+        touch-action: none; // Previne comportamentos padrão de toque
 
         &.visible {
             opacity: 1;
+            visibility: visible;
             pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            padding: 16px;
+            background: linear-gradient(
+                transparent,
+                rgba(0, 0, 0, 0.5) 10%,
+                rgba(0, 0, 0, 0.8) 50%,
+                rgba(0, 0, 0, 0.9)
+            );
+
+            .controlsRow {
+                gap: 10px;
+            }
+
+            button {
+                width: 32px;
+                height: 32px;
+                padding: 6px;
+
+                i {
+                    font-size: 20px;
+                }
+            }
+
+            .volumeControl {
+                display: none;
+            }
+
+            .mediaTitle {
+                .seriesInfo {
+                    font-size: 12px;
+                }
+
+                h2 {
+                    font-size: 90%;
+                    margin-bottom: 12px;
+                }
+            }
+        }
+
+        @media (max-width: 480px) {
+            .centerControls {
+                display: none;
+            }
+
+            .leftControls,
+            .rightControls {
+                width: auto;
+            }
         }
     }
 
@@ -82,6 +126,16 @@
         align-items: center;
         gap: 16px;
         margin-bottom: 16px;
+
+        @media (max-width: 768px) {
+            margin-bottom: 8px;
+            gap: 8px;
+
+            .timeDisplay {
+                font-size: 12px;
+                min-width: 40px;
+            }
+        }
     }
 
     .progressBar {
@@ -161,7 +215,104 @@
     .rightControls {
         display: flex;
         align-items: center;
-        gap: 3px;
+        gap: 8px; // Aumentado de 3px para 8px
+
+        button {
+            width: 44px; // Aumentado de 36px para 44px
+            height: 44px; // Aumentado de 36px para 44px
+            padding: 10px; // Aumentado de 8px para 10px
+            background: rgba(0, 0, 0, 0.3);
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+
+            i {
+                font-size: 24px;
+            }
+
+            // Estilo específico para os botões de avançar/retroceder
+            &[data-testid="rewind-button"],
+            &[data-testid="forward-button"] {
+                width: 48px; // Ainda maior para os botões de avançar/retroceder
+                height: 48px;
+                padding: 6px;
+                overflow: hidden; // Para garantir que a animação não cause scroll
+
+                img {
+                    width: 36px;
+                    height: 36px;
+                    filter: invert(1); // Inverte as cores para branco
+                    transition: transform 0.2s ease;
+
+                    &.animating {
+                        transform: scale(0.92);
+                    }
+                }
+            }
+
+            &[data-testid="rewind-button"] {
+                img.animating {
+                    animation: rotateBackward 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+            }
+
+            &[data-testid="forward-button"] {
+                img.animating {
+                    animation: rotateForward 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+            }
+        }
+
+        @media (max-width: 768px) {
+            gap: 4px;
+
+            button {
+                width: 40px;
+                height: 40px;
+                padding: 8px;
+
+                i {
+                    font-size: 22px;
+                }
+
+                &[data-testid="rewind-button"],
+                &[data-testid="forward-button"] {
+                    width: 44px;
+                    height: 44px;
+                    padding: 4px;
+
+                    img {
+                        width: 36px;
+                        height: 36px;
+                    }
+                }
+            }
+        }
+
+        @media (max-width: 480px) {
+            button {
+                width: 36px;
+                height: 36px;
+                padding: 6px;
+
+                i {
+                    font-size: 20px;
+                }
+
+                &[data-testid="rewind-button"],
+                &[data-testid="forward-button"] {
+                    width: 40px;
+                    height: 40px;
+                    padding: 4px;
+
+                    img {
+                        width: 32px;
+                        height: 32px;
+                    }
+                }
+            }
+        }
     }
 
     .rightControls {
@@ -279,6 +430,39 @@
 
         &.visible {
             transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            width: 100%;
+            max-width: none;
+
+            .episodeListHeader {
+                padding: 12px;
+
+                h3 {
+                    font-size: 16px;
+                }
+            }
+
+            .episodeItem {
+                padding: 8px 12px;
+
+                .episodeNumber {
+                    font-size: 12px;
+                }
+
+                .episodeInfo {
+                    h4 {
+                        font-size: 14px;
+                    }
+
+                    p {
+                        font-size: 12px;
+                        -webkit-line-clamp: 2;
+                        line-clamp: 2;
+                    }
+                }
+            }
         }
     }
 
@@ -408,6 +592,345 @@
 
             &:active {
                 transform: translateY(0);
+            }
+        }
+    }
+
+    .backButton {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        z-index: 10;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+        transform: translateX(-20px);
+
+        i {
+            font-size: 24px;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            top: 12px;
+            left: 12px;
+            width: 32px;
+            height: 32px;
+
+            i {
+                font-size: 20px;
+            }
+        }
+    }
+
+    &[data-showing-controls="true"] {
+        cursor: default;
+
+        .controls {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .backButton {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                transform: translateY(0) !important;
+            }
+        }
+    }
+
+    &[data-showing-controls="false"] {
+        cursor: none;
+
+        .controls {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+
+        .backButton {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-20px);
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                transform: translateY(50px);
+            }
+        }
+    }
+
+    &[data-user-interacting="true"] {
+        .controls {
+            transition-delay: 0s;
+        }
+    }
+
+    &[data-user-interacting="false"] {
+        .controls {
+            transition-delay: 0.3s;
+        }
+    }
+
+    // Previne seleção de texto durante toques
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+
+    // Estilos para fullscreen (todos os navegadores)
+    &:fullscreen,
+    &:-webkit-full-screen,
+    &:-moz-full-screen,
+    &:-ms-fullscreen {
+        background: black;
+        width: 100vw;
+        height: 100vh;
+
+        .videoPlayer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.4) 20%, rgba(0, 0, 0, 0.9));
+            padding: 24px;
+        }
+
+        button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+
+            i {
+                font-size: 24px;
+            }
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.15);
+                transform: scale(1.1);
+            }
+        }
+
+        .progressContainer {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+
+            .timeDisplay {
+                color: white;
+                font-size: 14px;
+                font-weight: 500;
+                opacity: 0.9;
+                min-width: 48px;
+                text-align: center;
+            }
+        }
+
+        .progressBar {
+            flex: 1;
+            height: 3px;
+            background-color: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            position: relative;
+            border-radius: 1.5px;
+            transition: all 0.2s ease;
+
+            &:hover {
+                height: 5px;
+
+                .progress::after {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            .buffered {
+                position: absolute;
+                height: 100%;
+                background-color: rgba(255, 255, 255, 0.3);
+                border-radius: 1.5px;
+                transition: width 0.2s ease;
+            }
+
+            .progress {
+                position: absolute;
+                height: 100%;
+                background-color: $main-color;
+                border-radius: 1.5px;
+                transition: width 0.2s ease;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    right: -6px;
+                    top: 50%;
+                    transform: scale(0);
+                    width: 12px;
+                    height: 12px;
+                    background-color: $main-color;
+                    border-radius: 50%;
+                    margin-top: -6px;
+                    transition: all 0.2s ease;
+                    opacity: 0;
+                    box-shadow: 0 0 10px rgba($main-color, 0.5);
+                }
+            }
+        }
+
+        .controlsRow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .leftControls,
+        .rightControls {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .volumeControl {
+            position: relative;
+            width: 100px;
+
+            input[type="range"] {
+                width: 100%;
+                cursor: pointer;
+                -webkit-appearance: none;
+                appearance: none;
+                background: rgba(255, 255, 255, 0.2);
+                height: 3px;
+                border-radius: 1.5px;
+                outline: none;
+                transition: all 0.2s ease;
+
+                &::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    width: 12px;
+                    height: 12px;
+                    background-color: $main-color;
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+
+                &::-moz-range-thumb {
+                    width: 12px;
+                    height: 12px;
+                    background-color: $main-color;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    border: none;
+                }
+            }
+        }
+
+        .mediaTitle {
+            text-align: center;
+
+            .seriesInfo {
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            h2 {
+                font-size: 100%;
+                font-weight: 800;
+                text-transform: uppercase;
+                margin-bottom: 20px;
+                text-shadow: rgba(0, 0, 0, 0.8) 2px 2px 4px;
+                letter-spacing: 1.5px;
+                line-height: 1.1;
+                position: relative;
+                color: var(--primary-color);
+            }
+        }
+
+        // Aplicar media queries também no modo fullscreen
+        @media (max-width: 768px) {
+            .controls {
+                padding: 12px;
+
+                .controlsRow {
+                    gap: 10px;
+                }
+
+                button {
+                    width: 32px;
+                    height: 32px;
+                    padding: 6px;
+
+                    i {
+                        font-size: 20px;
+                    }
+                }
+
+                .volumeControl {
+                    display: none;
+                }
+
+                .mediaTitle {
+                    .seriesInfo {
+                        font-size: 12px;
+                    }
+
+                    h2 {
+                        font-size: 90%;
+                        margin-bottom: 12px;
+                    }
+                }
+            }
+        }
+
+        @media (max-width: 480px) {
+            .centerControls {
+                display: none;
+            }
+
+            .leftControls,
+            .rightControls {
+                width: auto;
             }
         }
     }

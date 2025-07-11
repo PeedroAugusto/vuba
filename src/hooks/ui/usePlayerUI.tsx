@@ -17,10 +17,11 @@ interface UsePlayerUIOptions {
 }
 
 interface UsePlayerUIReturn extends PlayerUIState {
-    handleMouseMove: () => void;
+    handleInteraction: () => void;
     handleIntroComplete: () => void;
     toggleEpisodeList: () => void;
     setUIState: (state: Partial<PlayerUIState>) => void;
+    isUserInteracting: boolean;
 }
 
 const defaultOptions: Required<UsePlayerUIOptions> = {
@@ -33,6 +34,13 @@ export function usePlayerUI(options: UsePlayerUIOptions): UsePlayerUIReturn {
     const opts = { ...defaultOptions, ...options };
     const controlsTimeoutRef = useRef<number>();
     const mediaInfoTimeoutRef = useRef<number>();
+    const [isUserInteracting, setIsUserInteracting] = useState(false);
+    const isMobileRef = useRef<boolean>(false);
+
+    // Detecta se é um dispositivo móvel
+    useEffect(() => {
+        isMobileRef.current = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    }, []);
 
     const [uiState, setUiState] = useState<PlayerUIState>({
         showControls: true,
@@ -50,19 +58,43 @@ export function usePlayerUI(options: UsePlayerUIOptions): UsePlayerUIReturn {
     }, []);
 
     // Gerencia a visibilidade dos controles
-    const handleMouseMove = useCallback(() => {
+    const handleInteraction = useCallback(() => {
+        // Limpa qualquer timer existente
+        if (controlsTimeoutRef.current) {
+            window.clearTimeout(controlsTimeoutRef.current);
+            controlsTimeoutRef.current = undefined;
+        }
+
+        setIsUserInteracting(true);
         updateUIState({ showControls: true });
 
-        if (controlsTimeoutRef.current) {
-            clearTimeout(controlsTimeoutRef.current);
-        }
-
-        if (opts.isPlaying) {
+        // Só esconde os controles se o vídeo estiver em reprodução e não estiver mostrando a lista de episódios
+        if (opts.isPlaying && !uiState.showEpisodeList) {
+            const timeout = isMobileRef.current ? 3000 : opts.controlsTimeout; // Tempo maior para mobile
             controlsTimeoutRef.current = window.setTimeout(() => {
-                updateUIState({ showControls: false });
-            }, opts.controlsTimeout);
+                if (opts.isPlaying && !uiState.showEpisodeList) {
+                    updateUIState({ showControls: false });
+                    setIsUserInteracting(false);
+                }
+            }, timeout);
         }
-    }, [opts.isPlaying, opts.controlsTimeout, updateUIState]);
+    }, [opts.isPlaying, opts.controlsTimeout, updateUIState, uiState.showEpisodeList]);
+
+    // Reseta o timer quando o estado de reprodução muda
+    useEffect(() => {
+        if (!opts.isPlaying) {
+            // Se o vídeo está pausado, mostra os controles
+            updateUIState({ showControls: true });
+            setIsUserInteracting(true);
+            if (controlsTimeoutRef.current) {
+                window.clearTimeout(controlsTimeoutRef.current);
+                controlsTimeoutRef.current = undefined;
+            }
+        } else if (!uiState.showEpisodeList) {
+            // Se o vídeo começou a reproduzir e a lista de episódios não está aberta
+            handleInteraction();
+        }
+    }, [opts.isPlaying, handleInteraction, updateUIState, uiState.showEpisodeList]);
 
     // Gerencia a visibilidade das informações da mídia
     useEffect(() => {
@@ -91,10 +123,12 @@ export function usePlayerUI(options: UsePlayerUIOptions): UsePlayerUIReturn {
     useEffect(() => {
         return () => {
             if (controlsTimeoutRef.current) {
-                clearTimeout(controlsTimeoutRef.current);
+                window.clearTimeout(controlsTimeoutRef.current);
+                controlsTimeoutRef.current = undefined;
             }
             if (mediaInfoTimeoutRef.current) {
-                clearTimeout(mediaInfoTimeoutRef.current);
+                window.clearTimeout(mediaInfoTimeoutRef.current);
+                mediaInfoTimeoutRef.current = undefined;
             }
         };
     }, []);
@@ -110,13 +144,21 @@ export function usePlayerUI(options: UsePlayerUIOptions): UsePlayerUIReturn {
 
     const toggleEpisodeList = useCallback(() => {
         updateUIState({ showEpisodeList: !uiState.showEpisodeList });
+        // Reseta o timer de esconder controles quando a lista de episódios é aberta
+        if (!uiState.showEpisodeList) {
+            setIsUserInteracting(true);
+            if (controlsTimeoutRef.current) {
+                clearTimeout(controlsTimeoutRef.current);
+            }
+        }
     }, [uiState.showEpisodeList, updateUIState]);
 
     return {
         ...uiState,
-        handleMouseMove,
+        handleInteraction,
         handleIntroComplete,
         toggleEpisodeList,
-        setUIState: updateUIState
+        setUIState: updateUIState,
+        isUserInteracting
     };
 } 
